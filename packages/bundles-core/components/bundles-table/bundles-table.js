@@ -186,7 +186,7 @@ const BundlesTable = ({
             onSortChange={handleSortChange}
           />
         ) : (
-          <Spacings.Inline scale="xs">
+          <Spacings.Inline scale="xs" alignItems={'center'}>
             <Text.Body
               intlMessage={
                 query || hasFilters()
