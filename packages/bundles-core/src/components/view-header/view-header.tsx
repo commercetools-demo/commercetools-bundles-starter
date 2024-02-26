@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { FC } from 'react';
 import classnames from 'classnames';
 import Text from '@commercetools-uikit/text';

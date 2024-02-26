@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FieldArray } from 'formik';
 import kebabCase from 'lodash/kebabCase';

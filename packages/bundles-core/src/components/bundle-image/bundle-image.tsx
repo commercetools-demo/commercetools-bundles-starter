@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import {
   BinLinearIcon,

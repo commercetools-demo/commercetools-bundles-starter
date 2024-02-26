@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import TextInput from '@commercetools-uikit/text-input';
 import PrimaryButton from '@commercetools-uikit/primary-button';
@@ -85,11 +84,4 @@ const SearchInput: FC<Props> = ({ value, onChange, onSubmit, placeholder }) => {
 };
 
 SearchInput.displayName = 'SearchInput';
-SearchInput.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  placeholder: PropTypes.string,
-};
-
 export default SearchInput;
