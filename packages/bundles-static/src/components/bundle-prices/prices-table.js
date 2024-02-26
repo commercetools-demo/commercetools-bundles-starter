@@ -10,7 +10,7 @@ import {
 } from '@commercetools-frontend/constants';
 import Text from '@commercetools-uikit/text';
 import DataTable from '@commercetools-uikit/data-table';
-import { SORT_OPTIONS } from '@commercetools-us-ps/bundles-core/components/constants';
+import { SORT_OPTIONS } from '@commercetools-us-ps/bundles-core';
 import { getSkus } from '../../util';
 import GetProductPrices from './get-product-prices.graphql';
 import { COLUMN_KEYS, columnDefinitions } from './column-definitions';

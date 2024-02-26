@@ -11,8 +11,10 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
 
 import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
-import { ProductSearchInput } from '@commercetools-us-ps/bundles-core/components/index';
-import { localize } from '@commercetools-us-ps/bundles-core/components/util';
+import {
+  ProductSearchInput,
+  localize,
+} from '@commercetools-us-ps/bundles-core';
 import {
   PRODUCT,
   PRODUCT_NAME,

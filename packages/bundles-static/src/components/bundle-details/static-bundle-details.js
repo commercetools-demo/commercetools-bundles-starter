@@ -6,8 +6,8 @@ import { find } from 'lodash';
 import {
   BundleDetails,
   TabHeader,
-} from '@commercetools-us-ps/bundles-core/components';
-import { transformLocalizedFieldToString } from '@commercetools-us-ps/bundles-core/components/util';
+  transformLocalizedFieldToString,
+} from '@commercetools-us-ps/bundles-core';
 import { ROOT_PATH } from '../../constants';
 import EditBundleForm from '../edit-bundle-form';
 import StaticBundleImages from '../bundle-images';

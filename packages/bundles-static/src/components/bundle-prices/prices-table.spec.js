@@ -10,7 +10,7 @@ import {
   NO_VALUE_FALLBACK,
 } from '@commercetools-frontend/constants';
 import DataTable from '@commercetools-uikit/data-table';
-import { SORT_OPTIONS } from '@commercetools-us-ps/bundles-core/components/constants';
+import { SORT_OPTIONS } from '@commercetools-us-ps/bundles-core';
 import { generateProduct } from '../../test-util';
 import { getSkus } from '../../util';
 import PricesTable, { DateField } from './prices-table';

@@ -10,7 +10,7 @@ import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import Text from '@commercetools-uikit/text';
 import Tooltip from '@commercetools-uikit/tooltip';
 import { CheckActiveIcon, CheckInactiveIcon } from '@commercetools-uikit/icons';
-import { Loading } from '@commercetools-us-ps/bundles-core/components';
+import { Loading } from '@commercetools-us-ps/bundles-core';
 import { getSkus } from '../../util';
 import { MASTER_VARIANT_ID } from '../../constants';
 import EditBundle from '../edit-bundle-form/edit-bundle.graphql';

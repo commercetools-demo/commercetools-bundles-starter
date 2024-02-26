@@ -5,7 +5,7 @@ import FlatButton from '@commercetools-uikit/flat-button';
 import { PlusBoldIcon } from '@commercetools-uikit/icons';
 import Text from '@commercetools-uikit/text';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
-import { BundleImages } from '@commercetools-us-ps/bundles-core/components';
+import { BundleImages } from '@commercetools-us-ps/bundles-core';
 import SelectVariantImagesModal from './select-variant-images-modal';
 import messages from './messages';
 

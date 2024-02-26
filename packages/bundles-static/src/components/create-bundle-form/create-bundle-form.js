@@ -2,34 +2,37 @@ import { useMutation } from '@apollo/client';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
+import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import Spacings from '@commercetools-uikit/spacings';
 import {
   BackToList,
   TabContainer,
   View,
   ViewHeader,
-} from '@commercetools-us-ps/bundles-core/components/index';
-import { useShowSideNotification } from '@commercetools-us-ps/bundles-core/components/hooks';
+} from '@commercetools-us-ps/bundles-core';
 import { BUNDLE_PRODUCT_TYPE, ROOT_PATH } from '../../constants';
 import { BundleForm } from '../bundle-form';
 import CreateBundle from './create-bundle.graphql';
 import messages from './messages';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
 
 const CreateBundleForm = ({ match }) => {
   const intl = useIntl();
   const mainRoute = `/${match.params.projectKey}/${ROOT_PATH}`;
-  const showSuccessNotification = useShowSideNotification(
-    'success',
-    messages.createSuccess
-  );
-  const showErrorNotification = useShowSideNotification(
-    'error',
-    messages.createError
-  );
+  const showNotification = useShowNotification();
   const [createBundle, { data, loading }] = useMutation(CreateBundle, {
-    onCompleted: showSuccessNotification,
-    onError: showErrorNotification,
+    onCompleted: () =>
+      showNotification({
+        kind: 'success',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.createSuccess),
+      }),
+    onError: () =>
+      showNotification({
+        kind: 'error',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.createError),
+      }),
   });
 
   function onSubmit(values) {

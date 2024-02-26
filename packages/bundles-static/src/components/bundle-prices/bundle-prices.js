@@ -6,7 +6,7 @@ import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import { ListIcon, ExternalLinkIcon } from '@commercetools-uikit/icons';
-import { PriceFilters } from '@commercetools-us-ps/bundles-core/components';
+import { PriceFilters } from '@commercetools-us-ps/bundles-core';
 import { MASTER_VARIANT_ID } from '../../constants';
 import messages from './messages';
 import PricesTable from './prices-table';

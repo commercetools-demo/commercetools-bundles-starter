@@ -4,8 +4,8 @@ import {
   PathProvider,
   BundleProvider,
   GetBundleProductType,
-} from '@commercetools-us-ps/bundles-core/context';
-import { Error } from '@commercetools-us-ps/bundles-core/components';
+  Error,
+} from '@commercetools-us-ps/bundles-core';
 import { BUNDLE_PRODUCT_TYPE, ROOT_PATH } from './constants';
 import { useMcQuery } from '@commercetools-frontend/application-shell';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
