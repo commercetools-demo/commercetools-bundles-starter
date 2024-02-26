@@ -1,7 +1,6 @@
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import graphql from '@rollup/plugin-graphql';
 import json from '@rollup/plugin-json';
 import postcss from 'rollup-plugin-postcss';
@@ -24,8 +23,8 @@ export default [
         sourcemap: true,
       },
     ],
+    external:[/node_modules/],
     plugins: [
-      peerDepsExternal(),
       resolve(),
       commonjs(),
       typescript({ tsconfig: "./tsconfig.json" }),
