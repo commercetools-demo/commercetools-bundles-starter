@@ -1,20 +1,14 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
-import Spacings from '@commercetools-uikit/spacings';
-import {
-  BackToList,
-  TabContainer,
-  View,
-  ViewHeader,
-} from '@commercetools-us-ps/bundles-core';
 import { BUNDLE_PRODUCT_TYPE, ROOT_PATH } from '../../constants';
 import { BundleForm } from '../bundle-form';
 import CreateBundle from './create-bundle.graphql';
 import messages from './messages';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
+import { InfoDetailPage } from '@commercetools-frontend/application-components';
 
 const CreateBundleForm = ({ match }) => {
   const intl = useIntl();
@@ -45,27 +39,18 @@ const CreateBundleForm = ({ match }) => {
   }
 
   return (
-    <View>
-      <ViewHeader
-        title={<FormattedMessage {...messages.title} />}
-        backToList={
-          <BackToList
-            href={mainRoute}
-            label={intl.formatMessage(messages.backButton)}
-          />
-        }
+    <InfoDetailPage
+      onPreviousPathClick={() => history.push(mainRoute)}
+      title={intl.formatMessage(messages.title)}
+      previousPathLabel={intl.formatMessage(messages.backButton)}
+    >
+      <BundleForm
+        onSubmit={onSubmit}
+        data={data}
+        loading={loading}
+        redirect={mainRoute}
       />
-      <TabContainer>
-        <Spacings.Stack scale="m">
-          <BundleForm
-            onSubmit={onSubmit}
-            data={data}
-            loading={loading}
-            redirect={mainRoute}
-          />
-        </Spacings.Stack>
-      </TabContainer>
-    </View>
+    </InfoDetailPage>
   );
 };
 CreateBundleForm.displayName = 'CreateBundleForm';
