@@ -16,35 +16,29 @@ import { usePathContext } from '../../context';
 import { BundleCommands } from '../bundle-commands';
 import GetBundle from './get-bundle.graphql';
 import messages from './messages';
+import { TabularDetailPage } from '@commercetools-frontend/application-components';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 type Props = {
-  match: {
-    url?: string;
-    params: {
-      projectKey: string;
-      bundleId: string;
-    };
-  };
-  transformResults(...args: unknown[]): unknown;
+  transformResults(...args: unknown[]): { [key: string]: any };
   headers: React.ReactNode;
   container(...args: unknown[]): unknown;
 };
 
-const BundleDetails: FC<Props> = ({
-  match,
-  transformResults,
-  headers,
-  container,
-}) => {
+const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
   const intl = useIntl();
+  const history = useHistory();
+  const match = useRouteMatch<{
+    bundleId: string;
+  }>();
   const rootPath = usePathContext();
-  const { dataLocale, currencies, languages } = useApplicationContext(
-    (context) => ({
+  const { dataLocale, currencies, languages, projectKey } =
+    useApplicationContext((context) => ({
       dataLocale: context.dataLocale ?? '',
       currencies: context.project?.currencies ?? [],
       languages: context.project?.languages ?? [],
-    })
-  );
+      projectKey: context.project?.key ?? '',
+    }));
 
   const { data, error, loading, refetch } = useQuery(GetBundle, {
     variables: {
@@ -71,7 +65,10 @@ const BundleDetails: FC<Props> = ({
   const { id, version, key, sku, slug, masterData } = product;
   const { current, hasStagedChanges, published, staged } = masterData;
 
-  const transformed = {
+  const transformed: {
+    current: { [key: string]: any };
+    staged: { [key: string]: any };
+  } = {
     current: transformResults(current),
     staged: transformResults(staged),
   };
@@ -82,41 +79,35 @@ const BundleDetails: FC<Props> = ({
     key,
     sku,
     slug,
-    //TODO fixme   ...(hasStagedChanges ? transformed.staged : transformed.current),
+    ...(hasStagedChanges ? transformed.staged : transformed.current),
     current: transformed.current,
     staged: transformed.staged,
   };
 
   return (
-    <View>
-      <ViewHeader
-        title={localize({
-          obj: bundle,
-          key: 'name',
-          language: dataLocale,
-          fallback: id,
-          fallbackOrder: languages,
-        })}
-        backToList={
-          <BackToList
-            href={`/${match.params.projectKey}/${rootPath}`}
-            label={intl.formatMessage(messages.backButton)}
-          />
-        }
-        commands={
-          <BundleCommands
-            id={id}
-            version={version}
-            published={published}
-            hasStagedChanges={hasStagedChanges}
-            onComplete={refetch}
-          />
-        }
-      >
-        {headers}
-      </ViewHeader>
-      <TabContainer>{container(bundle, refetch)}</TabContainer>
-    </View>
+    <TabularDetailPage
+      title={localize({
+        obj: bundle,
+        key: 'name',
+        language: dataLocale,
+        fallback: id,
+        fallbackOrder: languages,
+      })}
+      onPreviousPathClick={() => history.push(`/${projectKey}/${rootPath}`)}
+      previousPathLabel={intl.formatMessage(messages.backButton)}
+      tabControls={headers}
+      formControls={
+        <BundleCommands
+          id={id}
+          version={version}
+          published={published}
+          hasStagedChanges={hasStagedChanges}
+          onComplete={refetch}
+        />
+      }
+    >
+      {container(bundle, refetch)}
+    </TabularDetailPage>
   );
 };
 

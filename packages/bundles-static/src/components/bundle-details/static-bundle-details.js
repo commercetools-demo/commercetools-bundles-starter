@@ -5,14 +5,15 @@ import { useIntl } from 'react-intl';
 import { find } from 'lodash';
 import {
   BundleDetails,
-  TabHeader,
   transformLocalizedFieldToString,
 } from '@commercetools-us-ps/bundles-core';
-import { ROOT_PATH } from '../../constants';
 import EditBundleForm from '../edit-bundle-form';
 import StaticBundleImages from '../bundle-images';
 import { BundlePrices } from '../bundle-prices';
 import messages from './messages';
+import { TabHeader } from '@commercetools-frontend/application-components';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import { useRouteMatch } from 'react-router-dom';
 
 export const transformResults = (results) => ({
   variantId: results.masterVariant.id,
@@ -25,8 +26,13 @@ export const transformResults = (results) => ({
   images: results.masterVariant.images,
 });
 
-const StaticBundleDetails = ({ match }) => {
+const StaticBundleDetails = () => {
   const intl = useIntl();
+  const match = useRouteMatch();
+  const { projectKey, entryPoint } = useApplicationContext((context) => ({
+    projectKey: context.project.key ?? '',
+    entryPoint: context.environment.entryPointUriPath,
+  }));
   return (
     <BundleDetails
       match={match}
@@ -34,66 +40,47 @@ const StaticBundleDetails = ({ match }) => {
       headers={
         <>
           <TabHeader
-            to={`/${match.params.projectKey}/${ROOT_PATH}/${match.params.bundleId}/general`}
+            to={`/${projectKey}/${entryPoint}/${match.params.bundleId}/general`}
             key={intl.formatMessage(messages.generalTab)}
-            name={intl.formatMessage(messages.generalTab)}
+            label={intl.formatMessage(messages.generalTab)}
           >
             {intl.formatMessage(messages.generalTab)}
           </TabHeader>
           <TabHeader
-            to={`/${match.params.projectKey}/${ROOT_PATH}/${match.params.bundleId}/images`}
+            to={`/${projectKey}/${entryPoint}/${match.params.bundleId}/images`}
             key={intl.formatMessage(messages.imagesTab)}
-            name={intl.formatMessage(messages.imagesTab)}
+            label={intl.formatMessage(messages.imagesTab)}
           >
             {intl.formatMessage(messages.imagesTab)}
           </TabHeader>
           <TabHeader
-            to={`/${match.params.projectKey}/${ROOT_PATH}/${match.params.bundleId}/prices`}
+            to={`/${projectKey}/${entryPoint}/${match.params.bundleId}/prices`}
             key={intl.formatMessage(messages.pricesTab)}
-            name={intl.formatMessage(messages.pricesTab)}
+            label={intl.formatMessage(messages.pricesTab)}
           >
             {intl.formatMessage(messages.pricesTab)}
           </TabHeader>
         </>
       }
-      container={(bundle, onComplete) => (
-        <Switch>
-          <Route
-            exact
-            path={`${match.url}/general`}
-            render={() => (
+      container={(bundle, onComplete) => {
+        return (
+          <Switch>
+            <Route exact path={`${match.url}/general`}>
               <EditBundleForm bundle={bundle} onComplete={onComplete} />
-            )}
-          />
-          <Route
-            path={`${match.url}/images`}
-            render={() => (
-              <StaticBundleImages
-                match={match}
-                {...bundle}
-                onComplete={onComplete}
-              />
-            )}
-          />
-          <Route
-            path={`${match.url}/prices`}
-            render={() => <BundlePrices match={match} bundle={bundle} />}
-          />
-        </Switch>
-      )}
+            </Route>
+            <Route path={`${match.url}/images`}>
+              <StaticBundleImages {...bundle} onComplete={onComplete} />
+            </Route>
+            <Route path={`${match.url}/prices`}>
+              <BundlePrices match={match} bundle={bundle} />
+            </Route>
+          </Switch>
+        );
+      }}
     />
   );
 };
 
 StaticBundleDetails.displayName = 'BundleDetails';
-StaticBundleDetails.propTypes = {
-  match: PropTypes.shape({
-    url: PropTypes.string,
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-      bundleId: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default StaticBundleDetails;

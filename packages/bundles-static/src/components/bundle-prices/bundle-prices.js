@@ -10,9 +10,11 @@ import { PriceFilters } from '@commercetools-us-ps/bundles-core';
 import { MASTER_VARIANT_ID } from '../../constants';
 import messages from './messages';
 import PricesTable from './prices-table';
+import { useRouteMatch } from 'react-router-dom';
 
-const BundlePrices = ({ match, bundle }) => {
+const BundlePrices = ({ bundle }) => {
   const intl = useIntl();
+  const match = useRouteMatch();
   const { project } = useApplicationContext();
   const { currencies } = project;
   const [currency, setCurrency] = useState(currencies[0]);
@@ -84,11 +86,6 @@ const BundlePrices = ({ match, bundle }) => {
 };
 BundlePrices.displayName = 'BundlePrices';
 BundlePrices.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   bundle: PropTypes.shape({
     id: PropTypes.string.isRequired,
     products: PropTypes.array,

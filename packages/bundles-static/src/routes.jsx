@@ -50,10 +50,9 @@ const ApplicationRoutes = () => {
             <Route path={`${match.path}/new`}>
               <CreateBundleForm />
             </Route>
-            <Route
-              path={`${match.path}/:bundleId`}
-              render={(props) => <StaticBundleDetails {...props} />}
-            />
+            <Route path={`${match.path}/:bundleId`}>
+              <StaticBundleDetails />
+            </Route>
             <Route render={(props) => <StaticBundlesTable {...props} />} />
           </Switch>
         </BundleProvider>

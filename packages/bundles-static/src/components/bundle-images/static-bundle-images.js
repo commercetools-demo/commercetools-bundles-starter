@@ -8,16 +8,11 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import { BundleImages } from '@commercetools-us-ps/bundles-core';
 import SelectVariantImagesModal from './select-variant-images-modal';
 import messages from './messages';
+import { useRouteMatch } from 'react-router-dom';
 
-const StaticBundleImages = ({
-  match,
-  id,
-  version,
-  images,
-  products,
-  onComplete,
-}) => {
+const StaticBundleImages = ({ id, version, images, products, onComplete }) => {
   const intl = useIntl();
+  const match = useRouteMatch();
   const [modalOpen, setModalOpen] = useState(false);
 
   function openModal() {
@@ -71,11 +66,6 @@ const StaticBundleImages = ({
 
 StaticBundleImages.displayName = 'BundleImages';
 StaticBundleImages.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
   id: PropTypes.string.isRequired,
   version: PropTypes.number.isRequired,
   products: PropTypes.array.isRequired,
