@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { useIntl } from 'react-intl';
 import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { BUNDLE_PRODUCT_TYPE, ROOT_PATH } from '../../constants';
@@ -9,11 +8,14 @@ import CreateBundle from './create-bundle.graphql';
 import messages from './messages';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { InfoDetailPage } from '@commercetools-frontend/application-components';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
-const CreateBundleForm = ({ match }) => {
+const CreateBundleForm = () => {
+  const match = useRouteMatch();
   const intl = useIntl();
   const mainRoute = `/${match.params.projectKey}/${ROOT_PATH}`;
   const showNotification = useShowNotification();
+  const history = useHistory();
   const [createBundle, { data, loading }] = useMutation(CreateBundle, {
     onCompleted: () =>
       showNotification({
@@ -54,12 +56,5 @@ const CreateBundleForm = ({ match }) => {
   );
 };
 CreateBundleForm.displayName = 'CreateBundleForm';
-CreateBundleForm.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
 
 export default CreateBundleForm;

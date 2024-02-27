@@ -4,12 +4,13 @@ import { FormattedMessage } from 'react-intl';
 import { BundleForm } from '@commercetools-us-ps/bundles-core';
 import { ProductField } from '../product-field';
 import messages from './messages';
+import { FormikProvider, useFormikContext } from 'formik';
 
 const PRODUCTS = 'products';
 
 const StaticForm = (props) => {
   const { values, touched, errors, handleBlur, handleChange } = props;
-
+  const formik = useFormikContext();
   useEffect(() => {
     props.setFieldValue('productSearch', props.values.products);
   }, [props.values.products]);
@@ -17,6 +18,7 @@ const StaticForm = (props) => {
   return (
     <BundleForm
       {...props}
+      formik={formik}
       component={{
         name: PRODUCTS,
         field: (push, remove) => (

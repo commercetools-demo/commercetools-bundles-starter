@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { FormattedDate, FormattedNumber, useIntl } from 'react-intl';
 import { find, minBy } from 'lodash';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
@@ -15,13 +14,18 @@ import {
 import { DATE_FORMAT_OPTIONS, PRODUCTS_ATTRIBUTE } from './constants';
 import columnDefinitions from './column-definitions';
 import messages from './messages';
+import { useFormikContext } from 'formik';
 
-const StaticBundlesTable = ({ match, history }) => {
+const StaticBundlesTable = () => {
   const intl = useIntl();
-  const { dataLocale, project } = useApplicationContext();
-  const { languages } = project;
+  const { dataLocale, languages } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+    currencies: context.project?.languages ?? [],
+  }));
   const [category, setCategory] = useState(null);
   const [product, setProduct] = useState(null);
+  const formik = useFormikContext();
+  console.log(formik);
 
   function filterByCategory(event, setFilter) {
     const targetValue = event.target.value;
@@ -89,8 +93,6 @@ const StaticBundlesTable = ({ match, history }) => {
 
   return (
     <BundlesTable
-      match={match}
-      history={history}
       columnDefinitions={columnDefinitions}
       renderItem={renderItem}
       title={messages.title}
@@ -118,17 +120,5 @@ const StaticBundlesTable = ({ match, history }) => {
 };
 
 StaticBundlesTable.displayName = 'StaticBundlesTable';
-StaticBundlesTable.propTypes = {
-  match: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default StaticBundlesTable;

@@ -20,18 +20,9 @@ import BundleProductsSearch from './bundle-search.rest.graphql';
 import messages from './messages';
 import { TColumn } from '@commercetools-uikit/data-table/dist/declarations/src/data-table';
 import { TRow } from '@commercetools-uikit/data-table';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 type Props = {
-  match: {
-    path: string;
-    url: string;
-    params: {
-      projectKey: string;
-    };
-  };
-  history: {
-    push(...args: unknown[]): unknown;
-  };
   title: {
     id: string;
     description?: string;
@@ -48,8 +39,6 @@ type Props = {
 };
 
 const BundlesTable: FC<Props> = ({
-  match,
-  history,
   title,
   subtitle,
   columnDefinitions,
@@ -57,6 +46,8 @@ const BundlesTable: FC<Props> = ({
   filterInputs,
 }) => {
   const intl = useIntl();
+  const match = useRouteMatch();
+  const history = useHistory();
   const { dataLocale } = useApplicationContext();
   const { where } = useBundleContext();
   const [query, setQuery] = useState<string>('');

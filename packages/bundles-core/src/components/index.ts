@@ -16,5 +16,5 @@ export * from './view-header';
 export * from './price-filters';
 export * from './bundle-images';
 export * from './bundle-form';
-export * from './util';
+export * from './utils';
 export * from './constants';

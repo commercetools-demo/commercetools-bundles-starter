@@ -11,7 +11,7 @@ import {
   View,
   ViewHeader,
 } from '../index';
-import { localize } from '../util';
+import { localize } from '../utils';
 import { usePathContext } from '../../context';
 import { BundleCommands } from '../bundle-commands';
 import GetBundle from './get-bundle.graphql';

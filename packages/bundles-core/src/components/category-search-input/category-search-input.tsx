@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import AsyncSelectInput from '@commercetools-uikit/async-select-input';
-import { getPathName, transformLocalizedFieldsForCategory } from '../util';
+import { getPathName, transformLocalizedFieldsForCategory } from '../utils';
 import CategorySearch from './category-search.graphql';
 
 const transformResults = (results) =>

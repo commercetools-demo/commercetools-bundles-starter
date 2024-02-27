@@ -47,10 +47,9 @@ const ApplicationRoutes = () => {
       <PathProvider value={ROOT_PATH}>
         <BundleProvider value={productType.id}>
           <Switch>
-            <Route
-              path={`${match.path}/new`}
-              render={(props) => <CreateBundleForm {...props} />}
-            />
+            <Route path={`${match.path}/new`}>
+              <CreateBundleForm />
+            </Route>
             <Route
               path={`${match.path}/:bundleId`}
               render={(props) => <StaticBundleDetails {...props} />}

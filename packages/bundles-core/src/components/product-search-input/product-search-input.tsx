@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 import Spacings from '@commercetools-uikit/spacings';
 import AsyncSelectInput from '@commercetools-uikit/async-select-input';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import { localize } from '../util';
+import { localize } from '../utils';
 import ProductSearch from './product-search.rest.graphql';
 import messages from './messages';
 

@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { useIntl } from 'react-intl';
-import { Formik } from 'formik';
+import { Formik, FormikProvider } from 'formik';
 import * as yup from 'yup';
 import { isEqual, pickBy } from 'lodash';
 import omitEmpty from 'omit-empty';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import LocalizedTextInput from '@commercetools-uikit/localized-text-input';
-import { transformLocalizedStringToField } from '@commercetools-us-ps/bundles-core';
 import StaticForm from './static-form';
 import { ProductField } from '../product-field';
 import messages from './messages';
+import { transformLocalizedStringToLocalizedField } from '@commercetools-frontend/l10n';
 
 const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
   const intl = useIntl();
@@ -91,10 +91,10 @@ const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
 
   const submitValues = (values) => {
     const submit = omitEmpty({
-      name: transformLocalizedStringToField(
+      name: transformLocalizedStringToLocalizedField(
         LocalizedTextInput.omitEmptyTranslations(values.name)
       ),
-      description: transformLocalizedStringToField(
+      description: transformLocalizedStringToLocalizedField(
         LocalizedTextInput.omitEmptyTranslations(values.description)
       ),
       key: values.key,
@@ -105,7 +105,7 @@ const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
       productSearch: JSON.stringify(
         ProductField.convertToSearchProductValue(values.products)
       ),
-      slug: transformLocalizedStringToField(
+      slug: transformLocalizedStringToLocalizedField(
         LocalizedTextInput.omitEmptyTranslations(values.slug)
       ),
     });
