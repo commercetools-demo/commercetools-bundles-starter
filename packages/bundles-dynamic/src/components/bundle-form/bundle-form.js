@@ -16,8 +16,10 @@ import messages from './messages';
 
 const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
   const intl = useIntl();
-  const { dataLocale, project } = useApplicationContext();
-  const { languages } = project;
+  const { dataLocale, languages } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+    languages: context.project.languages ?? [],
+  }));
 
   const initialBundleValues = () => ({
     id: bundle.id,

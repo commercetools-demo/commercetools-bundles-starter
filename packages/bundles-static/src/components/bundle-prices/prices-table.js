@@ -49,7 +49,9 @@ const PricesTable = ({
   getMcPriceUrl,
 }) => {
   const skus = getSkus(variants);
-  const { dataLocale } = useApplicationContext();
+  const { dataLocale } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+  }));
 
   const variables = {
     ...DEFAULT_VARIABLES,

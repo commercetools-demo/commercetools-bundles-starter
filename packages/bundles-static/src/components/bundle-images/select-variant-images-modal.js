@@ -48,7 +48,9 @@ const SelectVariantImagesModal = ({
 }) => {
   const skus = getSkus(variants);
   const intl = useIntl();
-  const { dataLocale } = useApplicationContext();
+  const { dataLocale } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+  }));
   const [selected, setSelected] = useState([]);
   const { data, error, loading } = useQuery(GetProductImages, {
     variables: {

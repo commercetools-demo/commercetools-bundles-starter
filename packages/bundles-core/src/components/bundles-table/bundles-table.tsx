@@ -48,7 +48,9 @@ const BundlesTable: FC<Props> = ({
   const intl = useIntl();
   const match = useRouteMatch();
   const history = useHistory();
-  const { dataLocale } = useApplicationContext();
+  const { dataLocale } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+  }));
   const { where } = useBundleContext();
   const [query, setQuery] = useState<string>('');
   const [measurementCache, setMeasurementCache] = useState<any>(null);

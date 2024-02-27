@@ -148,11 +148,15 @@ const BundlePreview = ({ bundle, refetch }) => {
     kind: 'error',
     domain: DOMAINS.SIDE,
   });
-  const { dataLocale, project } = useApplicationContext();
+  const { dataLocale, languages, currencies } = useApplicationContext(
+    (context) => ({
+      dataLocale: context.dataLocale ?? '',
+      languages: context.project.languages ?? [],
+      currencies: context.project.currencies ?? [],
+    })
+  );
   const cartPreview = React.useRef(null);
   const [projection, setProjection] = useState(PROJECTION.CURRENT);
-
-  const { currencies, languages } = project;
 
   const display = bundle[projection];
   const [main, ...side] = display.images;

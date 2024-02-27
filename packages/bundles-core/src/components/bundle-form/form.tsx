@@ -17,6 +17,7 @@ import LocalizedTextField from '@commercetools-uikit/localized-text-field';
 import PrimaryButton from '@commercetools-uikit/primary-button';
 import Constraints from '@commercetools-uikit/constraints';
 import messages from './messages';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 type TFormValues = {
   name: Record<string, string>;
@@ -37,7 +38,6 @@ type Formik = ReturnType<typeof useFormik<TFormValues>>;
 
 type Props = {
   formik: ReturnType<typeof useFormik<TFormValues>>;
-  dataLocale: string;
   fields?: React.ReactNode[];
   component?: {
     name: string;
@@ -63,7 +63,6 @@ type Props = {
 
 const Form: FC<Props> = ({
   formik,
-  dataLocale,
   initialValidation,
   fields,
   component,
@@ -79,6 +78,9 @@ const Form: FC<Props> = ({
   setFieldValue,
 }) => {
   const intl = useIntl();
+  const { dataLocale } = useApplicationContext((context) => ({
+    dataLocale: context.dataLocale ?? '',
+  }));
 
   useEffect(() => {
     if (!initialValidation.slugDefined && !touched.slug) {

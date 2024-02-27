@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { BundleForm } from '@commercetools-us-ps/bundles-core';
 import { ProductField } from '../product-field';
 import messages from './messages';
-import { FormikProvider, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 
 const PRODUCTS = 'products';
 

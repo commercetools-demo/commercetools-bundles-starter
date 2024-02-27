@@ -25,7 +25,6 @@ const StaticBundlesTable = () => {
   const [category, setCategory] = useState(null);
   const [product, setProduct] = useState(null);
   const formik = useFormikContext();
-  console.log(formik);
 
   function filterByCategory(event, setFilter) {
     const targetValue = event.target.value;
