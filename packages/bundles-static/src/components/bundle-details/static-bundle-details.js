@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router';
 import { useIntl } from 'react-intl';
-import { find } from 'lodash';
 import {
   BundleDetails,
   transformLocalizedFieldToString,
@@ -20,8 +18,9 @@ export const transformResults = (results) => ({
   name: transformLocalizedFieldToString(results.nameAllLocales),
   description: transformLocalizedFieldToString(results.descriptionAllLocales),
   sku: results.masterVariant.sku,
-  products: find(results.masterVariant.attributesRaw, { name: 'products' })
-    .value,
+  products: results.masterVariant.attributesRaw.find(
+    (item) => item.name === 'products'
+  )?.value,
   slug: results.slug,
   images: results.masterVariant.images,
 });

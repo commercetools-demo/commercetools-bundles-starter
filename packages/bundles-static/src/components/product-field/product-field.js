@@ -11,10 +11,7 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
 
 import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
-import {
-  ProductSearchInput,
-  localize,
-} from '@commercetools-us-ps/bundles-core';
+import { ProductSearchInput } from '@commercetools-us-ps/bundles-core';
 import {
   PRODUCT,
   PRODUCT_NAME,
@@ -25,6 +22,8 @@ import {
 } from './constants';
 import messages from './messages';
 import styles from './product-field.mod.css';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
+import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 
 const hasError = (touched, errors, index, field) =>
   !!get(touched, `[${index}].${field}`) && !!get(errors, `[${index}].${field}`);
@@ -152,12 +151,11 @@ ProductField.parseProductValue = (products, locale, languages) => {
 
     return {
       product: {
-        label: localize({
-          obj: value,
+        label: formatLocalizedString(value, {
           key: 'name',
-          language: locale,
-          fallback: value.id,
+          locale: locale,
           fallbackOrder: languages,
+          fallback: NO_VALUE_FALLBACK,
         }),
         value: JSON.stringify(value),
       },
