@@ -17,6 +17,8 @@ function restore_structure {
     git checkout "$CURRENT_BRANCH"
     git branch -D "$TAG_NAME" # Delete the temporary branch
     git pull --rebase
+    rm -rf bundles-core
+    rm -rf bundles-static
 }
 
 # Ensure clean state
