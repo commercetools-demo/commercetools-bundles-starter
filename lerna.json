@@ -1,7 +1,11 @@
 {
   "lerna": "3.15.0",
   "packages": [
-    "packages/*"
+    "backend-starter-dynamic-bundles",
+    "bundles-core",
+    "bundles-dynamic",
+    "bundles-static",
+    "platform-extension-static-bundles"
   ],
   "version": "1.0.3",
   "useWorkspaces": true,

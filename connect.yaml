@@ -1,7 +1,7 @@
 deployAs:
-  - name: packages/bundles-static
+  - name: bundles-static
     applicationType: merchant-center-custom-application
-    endpoint: /
+    endpoint: /bundles-static
     configuration:
       standardConfiguration:
         - key: APPLICATION_ID
