@@ -1,0 +1,2 @@
+*,:after,:before{box-sizing:inherit}body,html{color:var(--color-solid);font-family:var(--font-family);margin:0;padding:0}html{box-sizing:border-box}h1,h2,h3,h4,h5,h6{margin:0}a,button{cursor:pointer}a{color:var(--color-primary);text-decoration:none;transition:color .2s ease-in}p{margin:0}
+/*# sourceMappingURL=app.css.map*/
