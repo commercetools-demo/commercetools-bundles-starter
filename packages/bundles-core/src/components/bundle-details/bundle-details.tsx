@@ -14,6 +14,7 @@ import { BundleCommands } from '../bundle-commands';
 import GetBundle from './get-bundle.graphql';
 import messages from './messages';
 import {
+  PageContentWide,
   PageNotFound,
   TabularDetailPage,
 } from '@commercetools-frontend/application-components';
@@ -118,7 +119,7 @@ const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
         />
       }
     >
-      {container(bundle, refetch)}
+      <PageContentWide>{container(bundle, refetch)}</PageContentWide>
     </TabularDetailPage>
   );
 };

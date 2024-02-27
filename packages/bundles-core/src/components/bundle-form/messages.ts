@@ -21,6 +21,11 @@ export default defineMessages({
     description: 'Title for bundle name field',
     defaultMessage: 'Name',
   },
+  bundleNameDescription: {
+    id: 'Bundle.form.name.description',
+    description: 'Description for bundle name field',
+    defaultMessage: 'Enter the name in their corresponding locales.',
+  },
   bundleDescriptionTitle: {
     id: 'Bundle.form.description.title',
     description: 'Title for bundle description field',

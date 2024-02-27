@@ -1,11 +1,6 @@
 import React, { FC, useEffect } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
-import {
-  FieldArray,
-  FormikProvider,
-  useFormik,
-  useFormikContext,
-} from 'formik';
+import { useIntl } from 'react-intl';
+import { FieldArray, FormikProvider, useFormik } from 'formik';
 import kebabCase from 'lodash/kebabCase';
 import mapValues from 'lodash/mapValues';
 import Card from '@commercetools-uikit/card';
@@ -18,6 +13,7 @@ import PrimaryButton from '@commercetools-uikit/primary-button';
 import Constraints from '@commercetools-uikit/constraints';
 import messages from './messages';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import SaveToolbar from '../save-toolbar/save-toolbar';
 
 type TFormValues = {
   name: Record<string, string>;
@@ -96,72 +92,60 @@ const Form: FC<Props> = ({
       <Spacings.Stack scale="s" alignItems={'stretch'}>
         <CollapsiblePanel
           header={
-            <Text.Subheadline
-              as="h4"
+            <Text.Headline
+              as={'h2'}
               intlMessage={messages.generalInformationTitle}
-              isBold={true}
             />
           }
         >
           <Constraints.Horizontal>
             <Spacings.Stack scale={'m'} alignItems={'stretch'}>
-              {/*constraint="l">*/}
-              <Card type="raised" theme="light" insetScale={'m'}>
-                <LocalizedTextField
-                  name="name"
-                  value={values.name}
-                  title={<FormattedMessage {...messages.bundleNameTitle} />}
-                  selectedLanguage={dataLocale}
-                  isRequired={true}
-                  errors={errors.name}
-                  touched={!!touched.name}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Card>
-              <Card type="raised" theme="light" insetScale={'m'}>
-                <LocalizedTextField
-                  name="description"
-                  value={values.description}
-                  title={
-                    <FormattedMessage {...messages.bundleDescriptionTitle} />
-                  }
-                  selectedLanguage={dataLocale}
-                  // touched={LocalizedTextInput.isTouched(touched?.description)}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Card>
-              <Card type="raised" theme="light" insetScale={'m'}>
-                <TextField
-                  name="key"
-                  value={values.key}
-                  title={<FormattedMessage {...messages.bundleKeyTitle} />}
-                  hint={<FormattedMessage {...messages.bundleKeyDescription} />}
-                  touched={touched?.key}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Card>
-              <Card type="raised" theme="light" insetScale={'m'}>
-                <TextField
-                  name="sku"
-                  value={values.sku}
-                  title={<FormattedMessage {...messages.bundleSkuTitle} />}
-                  touched={touched?.sku}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                />
-              </Card>
+              <LocalizedTextField
+                name="name"
+                value={values.name}
+                title={intl.formatMessage(messages.bundleNameTitle)}
+                description={intl.formatMessage(messages.bundleNameDescription)}
+                selectedLanguage={dataLocale}
+                isRequired={true}
+                errors={errors.name}
+                touched={!!touched.name}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <LocalizedTextField
+                name="description"
+                value={values.description}
+                title={intl.formatMessage(messages.bundleDescriptionTitle)}
+                selectedLanguage={dataLocale}
+                // touched={LocalizedTextInput.isTouched(touched?.description)}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <TextField
+                name="key"
+                value={values.key}
+                title={intl.formatMessage(messages.bundleKeyTitle)}
+                hint={intl.formatMessage(messages.bundleKeyDescription)}
+                touched={touched?.key}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
+              <TextField
+                name="sku"
+                value={values.sku}
+                title={intl.formatMessage(messages.bundleSkuTitle)}
+                touched={touched?.sku}
+                onBlur={handleBlur}
+                onChange={handleChange}
+              />
             </Spacings.Stack>
           </Constraints.Horizontal>
         </CollapsiblePanel>
         <CollapsiblePanel
           header={
-            <Text.Subheadline
-              as="h4"
+            <Text.Headline
+              as={'h2'}
               intlMessage={messages.bundleInformationTitle}
-              isBold={true}
             />
           }
         >
@@ -185,39 +169,32 @@ const Form: FC<Props> = ({
         </CollapsiblePanel>
         <CollapsiblePanel
           header={
-            <Text.Subheadline
-              as="h4"
+            <Text.Headline
+              as={'h2'}
               intlMessage={messages.externalSearchTitle}
-              isBold={true}
             />
           }
         >
           <Constraints.Horizontal>
-            {/*constraint="l">*/}
-            <Card type="raised" theme="light" insetScale={'m'}>
-              <LocalizedTextField
-                name="slug"
-                value={values.slug}
-                title={<FormattedMessage {...messages.bundleSlugTitle} />}
-                hint={<FormattedMessage {...messages.bundleSlugDescription} />}
-                selectedLanguage={dataLocale}
-                isRequired={true}
-                errors={errors.slug}
-                // touched={LocalizedTextInput.isTouched(touched.slug)}
-                onBlur={handleBlur}
-                onChange={handleChange}
-              />
-            </Card>
+            <LocalizedTextField
+              name="slug"
+              value={values.slug}
+              title={intl.formatMessage(messages.bundleSlugTitle)}
+              hint={intl.formatMessage(messages.bundleSlugDescription)}
+              selectedLanguage={dataLocale}
+              isRequired={true}
+              errors={errors.slug}
+              // touched={LocalizedTextInput.isTouched(touched.slug)}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
           </Constraints.Horizontal>
         </CollapsiblePanel>
-        <Constraints.Horizontal>
-          {/*constraint="scale">*/}
-          <PrimaryButton
-            label={intl.formatMessage(messages.submitButton)}
-            isDisabled={!dirty || !isValid || isSubmitting}
-            onClick={() => handleSubmit()}
-          />
-        </Constraints.Horizontal>
+        <SaveToolbar
+          onSave={handleSubmit}
+          onCancel={formik.resetForm}
+          isVisible={dirty && isValid}
+        />
       </Spacings.Stack>
     </FormikProvider>
   );
