@@ -30,7 +30,7 @@ git checkout -b "$TAG_NAME"
 # Step 2: Restructure the repository
 mv packages/bundles-static . && mv packages/bundles-core .
 # Removing all other directories but keeping top-level files
-find packages -mindepth 1 -maxdepth 1 ! -name 'A' ! -name 'B' -exec rm -rf {} +
+find packages -mindepth 1 -maxdepth 1 ! -name 'bundles-static' ! -name 'bundles-core' -exec rm -rf {} +
 rm -rf packages # Remove the packages directory if empty
 
 # Step 3: Create tag and push it
