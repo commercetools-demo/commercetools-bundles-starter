@@ -16,6 +16,7 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 function restore_structure {
     git checkout "$CURRENT_BRANCH"
     git branch -D "$TAG_NAME" # Delete the temporary branch
+    git pull --rebase
 }
 
 # Ensure clean state
@@ -37,7 +38,7 @@ rm -rf packages # Remove the packages directory if empty
 git add -A
 git commit -m "Restructure repo for $TAG_NAME"
 git tag "$TAG_NAME"
-git push origin "$TAG_NAME"
+git push --tag
 
 # Restore the original repository structure
 restore_structure
