@@ -26,7 +26,6 @@ const StaticBundleImages = ({ id, version, images, products, onComplete }) => {
   return (
     <>
       <BundleImages
-        match={match}
         id={id}
         version={version}
         images={images}

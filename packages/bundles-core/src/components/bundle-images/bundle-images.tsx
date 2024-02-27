@@ -16,11 +16,6 @@ import styles from './bundle-images.mod.css';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 
 type Props = {
-  match: {
-    params: {
-      projectKey: string;
-    };
-  };
   id: string;
   version: number;
   images?: {
@@ -32,7 +27,6 @@ type Props = {
   noImagesMessage?: string | React.ReactNode;
 };
 const BundleImages: FC<Props> = ({
-  match,
   id,
   version,
   images,
@@ -40,8 +34,10 @@ const BundleImages: FC<Props> = ({
   actions,
   noImagesMessage,
 }) => {
-  const { environment } = useApplicationContext();
-  const { frontendHost } = environment;
+  const { projectKey, frontendHost } = useApplicationContext((context) => ({
+    projectKey: context.project?.key ?? '',
+    frontendHost: context.environment.frontendHost,
+  }));
   const intl = useIntl();
 
   const showNotification = useShowNotification();
@@ -55,7 +51,7 @@ const BundleImages: FC<Props> = ({
       }),
   });
 
-  const mcImageUrl = `https://${frontendHost}/${match.params.projectKey}/products/${id}/variants/${MASTER_VARIANT_ID}/images`;
+  const mcImageUrl = `https://${frontendHost}/${projectKey}/products/${id}/variants/${MASTER_VARIANT_ID}/images`;
 
   function addImage() {
     window.open(`${mcImageUrl}/new`, '_blank');
