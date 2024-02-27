@@ -38,10 +38,13 @@ const BundleDetails: FC<Props> = ({
 }) => {
   const intl = useIntl();
   const rootPath = usePathContext();
-  const { dataLocale, currencies } = useApplicationContext((context) => ({
-    dataLocale: context.dataLocale ?? '',
-    currencies: context.project?.currencies ?? [],
-  }));
+  const { dataLocale, currencies, languages } = useApplicationContext(
+    (context) => ({
+      dataLocale: context.dataLocale ?? '',
+      currencies: context.project?.currencies ?? [],
+      languages: context.project?.languages ?? [],
+    })
+  );
 
   const { data, error, loading, refetch } = useQuery(GetBundle, {
     variables: {
@@ -54,8 +57,6 @@ const BundleDetails: FC<Props> = ({
     },
     fetchPolicy: 'no-cache',
   });
-
-  const { languages } = data.project;
 
   if (loading) return <Loading />;
   if (error)
@@ -104,7 +105,6 @@ const BundleDetails: FC<Props> = ({
         }
         commands={
           <BundleCommands
-            match={match}
             id={id}
             version={version}
             published={published}

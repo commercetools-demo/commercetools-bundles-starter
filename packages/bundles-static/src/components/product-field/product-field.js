@@ -137,8 +137,11 @@ ProductField.isEmpty = (formValue) =>
       value.quantity.toString().trim() === ''
   );
 
-ProductField.parseProductValue = (products, locale, languages) =>
-  products.map((item) => {
+ProductField.parseProductValue = (products, locale, languages) => {
+  if (!products) {
+    return [];
+  }
+  return products.map((item) => {
     const sku = getAttribute(item, SKU);
     const value = {
       id: getAttribute(item, VARIANT_ID),
@@ -161,6 +164,7 @@ ProductField.parseProductValue = (products, locale, languages) =>
       quantity: getAttribute(item, QUANTITY),
     };
   });
+};
 ProductField.parseSearchProductValue = (products) =>
   products.map((item) => {
     return `${getAttribute(item, PRODUCT_REF).id}/${getAttribute(

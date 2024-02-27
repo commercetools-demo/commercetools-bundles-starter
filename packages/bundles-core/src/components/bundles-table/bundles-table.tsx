@@ -34,7 +34,11 @@ type Props = {
     defaultMessage: string;
   };
   columnDefinitions: Array<TColumn>;
-  renderItem(item: TRow, column: TColumn, isRowCollapsed?: boolean): ReactNode;
+  renderItem(
+    item: TRow,
+    column: TColumn<{ key: string } & TRow>,
+    isRowCollapsed?: boolean
+  ): ReactNode;
   filterInputs?(...args: unknown[]): unknown;
 };
 
@@ -53,7 +57,6 @@ const BundlesTable: FC<Props> = ({
   }));
   const { where } = useBundleContext();
   const [query, setQuery] = useState<string>('');
-  const [measurementCache, setMeasurementCache] = useState<any>(null);
   const [sort, setSort] = useState<COLUMN_KEYS>(COLUMN_KEYS.MODIFIED);
   const [direction, setDirection] = useState<SORT_OPTIONS>(SORT_OPTIONS.DESC);
   const [filters, setFilters] = useState<any>({ where });
@@ -73,18 +76,11 @@ const BundlesTable: FC<Props> = ({
     setQueryString(stringify(variables, { arrayFormat: 'repeat' }));
   }, [variables]);
 
-  function clearMeasurementCache() {
-    if (measurementCache) {
-      measurementCache.clearAll();
-    }
-  }
-
   function handleRowClick(id) {
     history.push(`${match.url}/${id}/general`);
   }
 
   function getProducts(key, value) {
-    clearMeasurementCache();
     setVariables({ ...variables, ...{ [key]: value } });
   }
 
@@ -135,14 +131,17 @@ const BundlesTable: FC<Props> = ({
 
   const hasFilters = () => Object.keys(filters).length > 1;
 
-  if (loading) return <Loading />;
-  if (error)
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
     return (
       <Error
         title={intl.formatMessage(messages.errorLoadingTitle)}
         message={error.message}
       />
     );
+  }
 
   const { products } = data;
   const { results, count, total } = products;
@@ -191,14 +190,12 @@ const BundlesTable: FC<Props> = ({
           <PaginatedTable
             columns={columnDefinitions}
             rows={results}
-            itemRenderer={(row, column) => renderItem(row, column)}
-            // itemRenderer={(row, column) => renderItem(row, column['key'])}
+            itemRenderer={(row, column) => renderItem(row, (column as any).key)}
             rowCount={count}
             total={total}
             offset={offset}
             next={next}
             previous={previous}
-            registerMeasurementCache={setMeasurementCache}
             onRowClick={(event, rowIndex) =>
               handleRowClick(results[rowIndex].id)
             }

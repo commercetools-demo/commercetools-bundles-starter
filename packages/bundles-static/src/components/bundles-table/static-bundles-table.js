@@ -10,6 +10,7 @@ import {
   CategorySearchInput,
   ProductSearchInput,
   StatusBadge,
+  getCode,
 } from '@commercetools-us-ps/bundles-core';
 import { DATE_FORMAT_OPTIONS, PRODUCTS_ATTRIBUTE } from './constants';
 import columnDefinitions from './column-definitions';
@@ -63,7 +64,7 @@ const StaticBundlesTable = () => {
       }
       case COLUMN_KEYS.STATUS: {
         const { published, hasStagedChanges } = bundle;
-        const code = StatusBadge.getCode(published, hasStagedChanges);
+        const code = getCode(published, hasStagedChanges);
         return <StatusBadge code={code} />;
       }
       case COLUMN_KEYS.PRICE: {

@@ -3,16 +3,14 @@ import DataTable, { TRow } from '@commercetools-uikit/data-table';
 import { Pagination } from '../pagination';
 import { TColumn } from '@commercetools-uikit/data-table/dist/declarations/src/data-table';
 
-type Props = {
+type Props<T extends TRow = TRow> = {
   columns: Array<TColumn>;
-  rows: Array<TRow>;
-  registerMeasurementCache?(...args: unknown[]): unknown;
+  rows: Array<T>;
   onRowClick?(row: TRow, rowIndex: number, columnKey: string): void;
-  defaultHeight?: number;
   rowCount: number;
   total: number;
   offset: number;
-  itemRenderer(item: TRow, column: TColumn, isRowCollapsed: boolean): ReactNode;
+  itemRenderer(item: T, column: TColumn<T>, isRowCollapsed: boolean): ReactNode;
   next(...args: unknown[]): unknown;
   previous(...args: unknown[]): unknown;
   sortBy: string;
@@ -20,7 +18,7 @@ type Props = {
   onSortChange(...args: unknown[]): unknown;
 };
 
-const PaginatedTable: FC<Props> = ({
+function PaginatedTable<T extends TRow = TRow>({
   columns,
   rows,
   rowCount,
@@ -30,33 +28,33 @@ const PaginatedTable: FC<Props> = ({
   total,
   offset,
   itemRenderer,
-  registerMeasurementCache,
   onRowClick,
-  defaultHeight,
   next,
   previous,
-}) => (
-  <>
-    <DataTable
-      columns={columns}
-      rows={rows}
-      itemRenderer={itemRenderer}
-      onRowClick={onRowClick}
-      sortedBy={sortBy}
-      sortDirection={sortDirection}
-      onSortChange={onSortChange}
-    />
-    {rowCount !== total && (
-      <Pagination
-        next={next}
-        previous={previous}
-        offset={offset}
-        rowCount={rowCount}
-        total={total}
+}: Props<T>) {
+  return (
+    <>
+      <DataTable<T>
+        columns={columns}
+        rows={rows}
+        itemRenderer={itemRenderer}
+        onRowClick={onRowClick}
+        sortedBy={sortBy}
+        sortDirection={sortDirection}
+        onSortChange={onSortChange}
       />
-    )}
-  </>
-);
+      {rowCount !== total && (
+        <Pagination
+          next={next}
+          previous={previous}
+          offset={offset}
+          rowCount={rowCount}
+          total={total}
+        />
+      )}
+    </>
+  );
+}
 PaginatedTable.displayName = 'PaginatedTable';
 
 export default PaginatedTable;

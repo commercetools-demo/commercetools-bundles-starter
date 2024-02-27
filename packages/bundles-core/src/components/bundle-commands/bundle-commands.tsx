@@ -15,13 +15,9 @@ import EditBundle from './edit-bundle.graphql';
 import DeleteBundle from './delete-bundle.graphql';
 import messages from './messages';
 import styles from './bundle-commands.mod.css';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 type Props = {
-  match: {
-    params: {
-      projectKey: string;
-    };
-  };
   id: string;
   version: number;
   published: boolean;
@@ -30,7 +26,6 @@ type Props = {
 };
 
 const BundleCommands: FC<Props> = ({
-  match,
   id,
   version,
   published,
@@ -38,6 +33,10 @@ const BundleCommands: FC<Props> = ({
   onComplete,
 }) => {
   const intl = useIntl();
+  const { projectKey } = useApplicationContext((context) => ({
+    projectKey: context.project?.key ?? '',
+  }));
+
   const rootPath = usePathContext();
   const [confirmingDelete, setConfirmingDelete] = useState(false);
   const showNotification = useShowNotification();
@@ -96,7 +95,7 @@ const BundleCommands: FC<Props> = ({
   }
 
   if (!loading && data) {
-    return <Redirect to={`/${match.params.projectKey}/${rootPath}`} />;
+    return <Redirect to={`/${projectKey}/${rootPath}`} />;
   }
 
   return (
