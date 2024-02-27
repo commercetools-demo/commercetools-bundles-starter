@@ -36,6 +36,7 @@ const loadStatusSelect = (published: boolean, hasStagedChanges: boolean) =>
     />
   );
 
+// @ts-ignore
 const loadStatusLabel = (value) => shallow(<StatusLabel data={{ value }} />);
 
 describe('status select', () => {
@@ -164,6 +165,7 @@ describe('status label', () => {
 describe('status option', () => {
   it('should display status of value', () => {
     const wrapper = shallow(
+      // @ts-ignore
       <StatusOption data={{ value: VALUES.UNPUBLISH_UNMODIFIED }} />
     );
     expect(wrapper.find(StatusBadge).prop('code')).toEqual(
