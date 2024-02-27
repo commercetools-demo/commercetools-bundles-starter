@@ -46,9 +46,7 @@ const StatusBadge: FC<Props> = ({ className, code }) => (
       isCondensed={true}
       tone={mapStatusCodeToTone(code)}
       label={messages[code].defaultMessage}
-    >
-      <FormattedMessage data-testid="status-message" {...messages[code]} />
-    </Stamp>
+    />
   </div>
 );
 StatusBadge.displayName = 'StatusBadge';
