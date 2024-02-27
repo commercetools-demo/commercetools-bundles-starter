@@ -31,7 +31,8 @@ export default [
       graphql(),
       json(),
       svgr(),
-      postcss()
+      postcss({extract: false,
+        modules: true,})
     ],
   }
 ];
