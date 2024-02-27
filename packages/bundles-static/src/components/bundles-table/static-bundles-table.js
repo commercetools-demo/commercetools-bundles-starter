@@ -4,7 +4,6 @@ import { find, minBy } from 'lodash';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 import {
-  localize,
   BundlesTable,
   COLUMN_KEYS,
   CategorySearchInput,
@@ -15,7 +14,7 @@ import {
 import { DATE_FORMAT_OPTIONS, PRODUCTS_ATTRIBUTE } from './constants';
 import columnDefinitions from './column-definitions';
 import messages from './messages';
-import { useFormikContext } from 'formik';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
 
 const StaticBundlesTable = () => {
   const intl = useIntl();
@@ -49,11 +48,11 @@ const StaticBundlesTable = () => {
 
     switch (columnKey) {
       case COLUMN_KEYS.NAME:
-        return localize({
-          obj: bundle,
+        return formatLocalizedString(bundle, {
           key: 'name',
-          language: dataLocale,
+          locale: dataLocale,
           fallbackOrder: languages,
+          fallback: NO_VALUE_FALLBACK,
         });
       case COLUMN_KEYS.PRODUCTS: {
         const products = find(masterVariant.attributes, {

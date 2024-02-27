@@ -4,7 +4,10 @@ import { useQuery } from '@apollo/client';
 import omit from 'lodash/omit';
 import values from 'lodash/values';
 import { stringify } from 'qs';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import {
+  useApplicationContext,
+  useMcQuery,
+} from '@commercetools-frontend/application-shell-connectors';
 import Card from '@commercetools-uikit/card';
 import FlatButton from '@commercetools-uikit/flat-button';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
@@ -13,14 +16,17 @@ import Text from '@commercetools-uikit/text';
 import { PlusBoldIcon } from '@commercetools-uikit/icons';
 import { Error, Loading, PaginatedTable, SearchInput } from '../index';
 import { SORT_OPTIONS } from '../constants';
-import { useBundleContext } from '../../context/bundle-context';
+import { useBundleContext } from '../../context';
 import { COLUMN_KEYS } from './column-definitions';
-import { DEFAULT_VARIABLES } from './constants';
+import { DEFAULT_VARIABLES, PAGE_SIZE } from './constants';
 import BundleProductsSearch from './bundle-search.rest.graphql';
 import messages from './messages';
 import { TColumn } from '@commercetools-uikit/data-table/dist/declarations/src/data-table';
 import { TRow } from '@commercetools-uikit/data-table';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { TProduct, TQuery } from '../../types/generated/ctp';
+import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
+import { PageNotFound } from '@commercetools-frontend/application-components';
 
 type Props = {
   title: {
@@ -66,11 +72,21 @@ const BundlesTable: FC<Props> = ({
     filter: [where],
   };
 
-  const [queryString, setQueryString] = useState('');
+  const [page, setPage] = useState<number>(1);
+  const [perPage, setPerPage] = useState<number>(PAGE_SIZE);
+
+  const [queryString, setQueryString] = useState<string>('');
   const [variables, setVariables] = useState(QUERY_VARIABLES);
-  const { data, error, loading } = useQuery(BundleProductsSearch, {
-    variables: { queryString },
-  });
+
+  const { data, error, loading } = useMcQuery<TQuery, { queryString: string }>(
+    BundleProductsSearch,
+    {
+      variables: { queryString },
+      context: {
+        target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
+      },
+    }
+  );
 
   useEffect(() => {
     setQueryString(stringify(variables, { arrayFormat: 'repeat' }));
@@ -95,15 +111,18 @@ const BundlesTable: FC<Props> = ({
     );
   }
 
-  function next() {
-    const nextOffset = variables.offset + variables.limit;
-    getProducts('offset', nextOffset);
-  }
+  const onPageChange = (newPage: number) => {
+    setPage(newPage);
+    const offset = (newPage - 1) * perPage;
+    getProducts('offset', offset);
+  };
 
-  function previous() {
-    const nextOffset = variables.offset - variables.limit;
-    getProducts('offset', nextOffset);
-  }
+  const onPerPageChange = (newPerPage: number) => {
+    setPerPage(newPerPage);
+    const offset = (page - 1) * newPerPage;
+    getProducts('offset', offset);
+    getProducts('limit', newPerPage);
+  };
 
   function search(searchTerm: string) {
     if (searchTerm) {
@@ -142,10 +161,12 @@ const BundlesTable: FC<Props> = ({
       />
     );
   }
+  if (!data || !data.products) {
+    return <PageNotFound />;
+  }
 
   const { products } = data;
   const { results, count, total } = products;
-  const { offset } = variables;
 
   return (
     <Spacings.Inset scale="m">
@@ -187,21 +208,21 @@ const BundlesTable: FC<Props> = ({
           </Spacings.Stack>
         </Card>
         {count > 0 ? (
-          <PaginatedTable
+          <PaginatedTable<TProduct>
             columns={columnDefinitions}
             rows={results}
             itemRenderer={(row, column) => renderItem(row, (column as any).key)}
-            rowCount={count}
             total={total}
-            offset={offset}
-            next={next}
-            previous={previous}
             onRowClick={(event, rowIndex) =>
               handleRowClick(results[rowIndex].id)
             }
             sortBy={sort}
             sortDirection={direction}
             onSortChange={handleSortChange}
+            page={page}
+            onPageChange={onPageChange}
+            perPage={perPage}
+            onPerPageChange={onPerPageChange}
           />
         ) : (
           <Spacings.Inline scale="xs" alignItems={'center'}>

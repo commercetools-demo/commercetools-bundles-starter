@@ -4,7 +4,6 @@ export * from './bundles-table';
 export * from './back-to-list';
 export * from './category-search-input';
 export * from './paginated-table';
-export * from './pagination';
 export * from './product-search-input';
 export * from './search-input';
 export * from './states';

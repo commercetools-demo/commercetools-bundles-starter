@@ -1,14 +1,14 @@
-/* eslint-disable import/prefer-default-export */
-import localize from './localize';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
+import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
 
 function convertToPathName(categoriesInPath, language: string, languages) {
   return categoriesInPath
     .map((categoryInPath) =>
-      localize({
-        obj: normalizeCategory(categoryInPath),
+      formatLocalizedString(normalizeCategory(categoryInPath), {
         key: 'name',
-        language,
+        locale: language,
         fallbackOrder: languages,
+        fallback: NO_VALUE_FALLBACK,
       })
     )
     .join(' > ');

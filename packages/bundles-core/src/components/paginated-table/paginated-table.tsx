@@ -1,36 +1,36 @@
 import React, { FC, ReactNode } from 'react';
 import DataTable, { TRow } from '@commercetools-uikit/data-table';
-import { Pagination } from '../pagination';
+import { Pagination } from '@commercetools-uikit/pagination';
 import { TColumn } from '@commercetools-uikit/data-table/dist/declarations/src/data-table';
 
 type Props<T extends TRow = TRow> = {
   columns: Array<TColumn>;
   rows: Array<T>;
   onRowClick?(row: TRow, rowIndex: number, columnKey: string): void;
-  rowCount: number;
   total: number;
-  offset: number;
   itemRenderer(item: T, column: TColumn<T>, isRowCollapsed: boolean): ReactNode;
-  next(...args: unknown[]): unknown;
-  previous(...args: unknown[]): unknown;
   sortBy: string;
   sortDirection: 'asc' | 'desc';
   onSortChange(...args: unknown[]): unknown;
+  page: number;
+  onPageChange: (newPage: number) => void;
+  perPage: number;
+  onPerPageChange: (newPerPage: number) => void;
 };
 
 function PaginatedTable<T extends TRow = TRow>({
   columns,
   rows,
-  rowCount,
   sortBy,
   sortDirection,
   onSortChange,
   total,
-  offset,
   itemRenderer,
   onRowClick,
-  next,
-  previous,
+  page,
+  perPage,
+  onPerPageChange,
+  onPageChange,
 }: Props<T>) {
   return (
     <>
@@ -43,15 +43,13 @@ function PaginatedTable<T extends TRow = TRow>({
         sortDirection={sortDirection}
         onSortChange={onSortChange}
       />
-      {rowCount !== total && (
-        <Pagination
-          next={next}
-          previous={previous}
-          offset={offset}
-          rowCount={rowCount}
-          total={total}
-        />
-      )}
+      <Pagination
+        page={page}
+        onPageChange={onPageChange}
+        perPage={perPage}
+        onPerPageChange={onPerPageChange}
+        totalItems={total}
+      />
     </>
   );
 }

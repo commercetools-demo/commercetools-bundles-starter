@@ -4,9 +4,11 @@ import { useQuery } from '@apollo/client';
 import Spacings from '@commercetools-uikit/spacings';
 import AsyncSelectInput from '@commercetools-uikit/async-select-input';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
-import { localize } from '../utils';
 import ProductSearch from './product-search.rest.graphql';
 import messages from './messages';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
+import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
+import { OptionProps } from 'react-select';
 
 const ItemCache = (initialItems?) => ({
   items: { ...initialItems },
@@ -17,13 +19,11 @@ const ItemCache = (initialItems?) => ({
 
 const cache = ItemCache();
 
-type Props = {
-  data?: {
+const ProductSearchOption: FC<
+  OptionProps<{
     value: string;
-  };
-};
-
-const ProductSearchOption: FC<Props> = (props) => {
+  }>
+> = (props) => {
   const intl = useIntl();
   const { dataLocale, languages } = useApplicationContext((context) => ({
     dataLocale: context.dataLocale ?? '',
@@ -33,30 +33,28 @@ const ProductSearchOption: FC<Props> = (props) => {
   const { id, sku, price } = variant;
 
   return (
-    <>FIX ME</>
-    // <AsyncSelectInput.Option {...props}>
-    //   <Spacings.Inline justifyContent="space-between">
-    //     <strong>
-    //       {localize({
-    //         obj: variant,
-    //         key: 'name',
-    //         language: dataLocale,
-    //         fallback: id,
-    //         fallbackOrder: languages,
-    //       })}
-    //     </strong>
-    //     {price && (
-    //       <FormattedNumber
-    //         value={price.value.centAmount / 100}
-    //         style="currency"
-    //         currency={price.value.currencyCode}
-    //       />
-    //     )}
-    //   </Spacings.Inline>
-    //
-    //   {id && <div>{`${intl.formatMessage(messages.id)}: ${id}`}</div>}
-    //   {sku && <div>{`${intl.formatMessage(messages.sku)}: ${sku}`}</div>}
-    // </AsyncSelectInput.Option>
+    <AsyncSelectInput.Option {...props}>
+      <Spacings.Inline justifyContent="space-between">
+        <strong>
+          {formatLocalizedString(variant, {
+            key: 'name',
+            locale: dataLocale,
+            fallbackOrder: languages,
+            fallback: NO_VALUE_FALLBACK,
+          })}
+        </strong>
+        {price && (
+          <FormattedNumber
+            value={price.value.centAmount / 100}
+            style="currency"
+            currency={price.value.currencyCode}
+          />
+        )}
+      </Spacings.Inline>
+
+      {id && <div>{`${intl.formatMessage(messages.id)}: ${id}`}</div>}
+      {sku && <div>{`${intl.formatMessage(messages.sku)}: ${sku}`}</div>}
+    </AsyncSelectInput.Option>
   );
 };
 ProductSearchOption.displayName = 'ProductSearchOption';
@@ -128,12 +126,11 @@ const ProductSearchInput: FC<ProductSearchInputProps> = ({
   const mapOptions = (items) =>
     items.map((item) => ({
       value: JSON.stringify(item),
-      label: localize({
-        obj: item,
+      label: formatLocalizedString(item, {
         key: 'name',
-        language: dataLocale,
-        fallback: item.id,
+        locale: dataLocale,
         fallbackOrder: languages,
+        fallback: NO_VALUE_FALLBACK,
       }),
     }));
 
