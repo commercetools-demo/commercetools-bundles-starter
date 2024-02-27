@@ -1,26 +1,34 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from '@apollo/client';
-import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import {
-  BackToList,
-  Error,
-  Loading,
-  TabContainer,
-  View,
-  ViewHeader,
-} from '../index';
-import { localize } from '../utils';
+  GRAPHQL_TARGETS,
+  NO_VALUE_FALLBACK,
+} from '@commercetools-frontend/constants';
+import {
+  useApplicationContext,
+  useMcQuery,
+} from '@commercetools-frontend/application-shell-connectors';
+import { Error, Loading } from '../index';
 import { usePathContext } from '../../context';
 import { BundleCommands } from '../bundle-commands';
 import GetBundle from './get-bundle.graphql';
 import messages from './messages';
-import { TabularDetailPage } from '@commercetools-frontend/application-components';
+import {
+  PageNotFound,
+  TabularDetailPage,
+} from '@commercetools-frontend/application-components';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
+import {
+  TProductData,
+  TQuery,
+  TQuery_ProductArgs,
+} from '../../types/generated/ctp';
 
 type Props = {
-  transformResults(...args: unknown[]): { [key: string]: any };
+  transformResults(
+    product: TProductData | undefined | null
+  ): TProductData | undefined;
   headers: React.ReactNode;
   container(...args: unknown[]): unknown;
 };
@@ -40,7 +48,10 @@ const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
       projectKey: context.project?.key ?? '',
     }));
 
-  const { data, error, loading, refetch } = useQuery(GetBundle, {
+  const { data, error, loading, refetch } = useMcQuery<
+    TQuery,
+    { locale: string; currency: string } & TQuery_ProductArgs
+  >(GetBundle, {
     variables: {
       id: match.params.bundleId,
       locale: dataLocale,
@@ -52,23 +63,26 @@ const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
     fetchPolicy: 'no-cache',
   });
 
-  if (loading) return <Loading />;
-  if (error)
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
     return (
       <Error
         title={intl.formatMessage(messages.errorLoadingTitle)}
         message={error.message}
       />
     );
+  }
+  if (!data || !data.product) {
+    return <PageNotFound />;
+  }
 
   const { product } = data;
-  const { id, version, key, sku, slug, masterData } = product;
+  const { id, version, key, masterData } = product;
   const { current, hasStagedChanges, published, staged } = masterData;
 
-  const transformed: {
-    current: { [key: string]: any };
-    staged: { [key: string]: any };
-  } = {
+  const transformed = {
     current: transformResults(current),
     staged: transformResults(staged),
   };
@@ -77,8 +91,7 @@ const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
     id,
     version,
     key,
-    sku,
-    slug,
+
     ...(hasStagedChanges ? transformed.staged : transformed.current),
     current: transformed.current,
     staged: transformed.staged,
@@ -86,12 +99,11 @@ const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {
 
   return (
     <TabularDetailPage
-      title={localize({
-        obj: bundle,
+      title={formatLocalizedString(bundle, {
         key: 'name',
-        language: dataLocale,
-        fallback: id,
+        locale: dataLocale,
         fallbackOrder: languages,
+        fallback: NO_VALUE_FALLBACK,
       })}
       onPreviousPathClick={() => history.push(`/${projectKey}/${rootPath}`)}
       previousPathLabel={intl.formatMessage(messages.backButton)}

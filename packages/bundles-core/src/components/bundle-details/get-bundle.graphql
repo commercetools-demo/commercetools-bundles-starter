@@ -18,13 +18,7 @@ fragment BundleDetails on ProductData {
       url
       label
     }
-    price(
-      currency: $currency
-      country: $country
-      customerGroupId: $customerGroup
-      channelId: $channel
-      date: $date
-    ) {
+    price(currency: $currency, country: $country, customerGroupId: $customerGroup, channelId: $channel, date: $date) {
       value {
         type
         currencyCode
@@ -35,15 +29,7 @@ fragment BundleDetails on ProductData {
   }
 }
 
-query GetBundle(
-  $id: String!
-  $locale: Locale!
-  $currency: Currency!
-  $country: Country
-  $customerGroup: String
-  $channel: String
-  $date: DateTime
-) {
+query GetBundle($id: String!, $locale: Locale!, $currency: Currency!, $country: Country, $customerGroup: String, $channel: String, $date: DateTime) {
   product(id: $id) {
     id
     key
