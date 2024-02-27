@@ -1,5 +1,0 @@
-node_modules/*
-coverage/*
-*.rest.graphql
-*.spec.js
-test-util/index.js
