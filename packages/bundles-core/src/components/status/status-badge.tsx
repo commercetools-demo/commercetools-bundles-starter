@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import Spacings from '@commercetools-uikit/spacings';
-import styles from './status-badge.mod.css';
+import Stamp from '@commercetools-uikit/stamp';
 import messages from './messages';
+import { TTone } from '@commercetools-uikit/stamp/dist/declarations/src/stamp';
 
 export enum PRODUCT_STATUS {
   PUBLISHED = 'published',
@@ -26,17 +25,30 @@ type Props = {
     | PRODUCT_ACTIONS.UNPUBLISH;
 };
 
+export const mapStatusCodeToTone = (statusCode: string): TTone | undefined => {
+  switch (statusCode) {
+    case 'unpublished':
+    case 'unpublish':
+      return 'critical';
+    case 'published':
+    case 'publish':
+      return 'primary';
+    case 'modified':
+      return 'warning';
+    default:
+      return undefined;
+  }
+};
+
 const StatusBadge: FC<Props> = ({ className, code }) => (
-  <div
-    data-testid="status-badge"
-    className={classNames(styles.container, className)}
-  >
-    <Spacings.Inline scale="s" alignItems="center">
-      <div data-testid="status-indicator" className={styles[code]} />
-      <span>
-        <FormattedMessage data-testid="status-message" {...messages[code]} />
-      </span>
-    </Spacings.Inline>
+  <div data-testid="status-badge">
+    <Stamp
+      isCondensed={true}
+      tone={mapStatusCodeToTone(code)}
+      label={messages[code].defaultMessage}
+    >
+      <FormattedMessage data-testid="status-message" {...messages[code]} />
+    </Stamp>
   </div>
 );
 StatusBadge.displayName = 'StatusBadge';

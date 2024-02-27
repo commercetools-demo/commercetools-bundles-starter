@@ -1,40 +1,32 @@
 import React, { FC, useState } from 'react';
 import SelectInput from '@commercetools-uikit/select-input';
 import StatusBadge, { getCode, PRODUCT_ACTIONS } from './status-badge';
+import type { Props as ReactSelectProps } from 'react-select/dist/declarations/src';
+import { SingleValueProps, OptionProps } from 'react-select';
 
-type StatusLabelProps = {
-  data?: {
-    value: string;
-  };
-};
-
-export const StatusLabel: FC<StatusLabelProps> = (props) => {
+export const StatusLabel: FC<SingleValueProps<{ value: string }>> = (props) => {
   const value = JSON.parse(props.data?.value || '');
   const { hasStagedChanges, status } = value;
   const published = status === PRODUCT_ACTIONS.PUBLISH;
   const code = getCode(published, hasStagedChanges);
   return (
-    <></>
-    // <SelectInput.SingleValue {...props}>
-    //   <StatusBadge code={code} />
-    // </SelectInput.SingleValue>
+    <SelectInput.SingleValue {...props}>
+      <StatusBadge code={code} />
+    </SelectInput.SingleValue>
   );
 };
 StatusLabel.displayName = 'StatusLabel';
 
-type StatusOptionProps = {
-  data?: {
+export const StatusOption: FC<
+  OptionProps<{
     value: string;
-  };
-};
-
-export const StatusOption: FC<StatusOptionProps> = (props) => {
+  }>
+> = (props) => {
   const value = JSON.parse(props.data?.value || '');
   return (
-    <></>
-    // <SelectInput.Option {...props}>
-    //   <StatusBadge code={value.status} />
-    // </SelectInput.Option>
+    <SelectInput.Option {...props}>
+      <StatusBadge code={value.status} />
+    </SelectInput.Option>
   );
 };
 StatusOption.displayName = 'StatusOption';
@@ -102,6 +94,13 @@ const StatusSelect: FC<StatusSelectProps> = ({
     onChange(publish);
   }
 
+  const components: ReactSelectProps['components'] = {
+    // @ts-ignore
+    SingleValue: StatusLabel,
+    // @ts-ignore
+    Option: StatusOption,
+  };
+
   return (
     <div className={className}>
       <SelectInput
@@ -110,10 +109,7 @@ const StatusSelect: FC<StatusSelectProps> = ({
         options={options}
         filterOption={filterOption}
         onChange={handleChange}
-        // components={{
-        //   SingleValue: StatusLabel,
-        //   Option: StatusOption,
-        // }}
+        components={components}
       />
     </div>
   );

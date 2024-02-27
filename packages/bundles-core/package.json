@@ -66,6 +66,7 @@
     "@commercetools-uikit/pagination": "^18.1.0",
     "@commercetools-uikit/select-field": "^18.1.0",
     "@commercetools-uikit/spacings": "^18.1.0",
+    "@commercetools-uikit/stamp": "^18.2.0",
     "@commercetools-uikit/text": "^18.1.0",
     "@commercetools-uikit/text-field": "^18.2.0",
     "@commercetools-uikit/text-input": "^18.1.0",

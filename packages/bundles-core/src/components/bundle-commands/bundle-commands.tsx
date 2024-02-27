@@ -22,7 +22,7 @@ type Props = {
   version: number;
   published: boolean;
   hasStagedChanges: boolean;
-  onComplete(...args: unknown[]): unknown;
+  onComplete(): void;
 };
 
 const BundleCommands: FC<Props> = ({
