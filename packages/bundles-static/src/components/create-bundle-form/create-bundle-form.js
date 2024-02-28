@@ -8,12 +8,15 @@ import CreateBundle from './create-bundle.graphql';
 import messages from './messages';
 import { useShowNotification } from '@commercetools-frontend/actions-global';
 import { InfoDetailPage } from '@commercetools-frontend/application-components';
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 const CreateBundleForm = () => {
-  const match = useRouteMatch();
   const intl = useIntl();
-  const mainRoute = `/${match.params.projectKey}/${ROOT_PATH}`;
+  const { projectKey } = useApplicationContext((context) => ({
+    projectKey: context.project?.key ?? '',
+  }));
+  const mainRoute = `/${projectKey}/${ROOT_PATH}`;
   const showNotification = useShowNotification();
   const history = useHistory();
   const [createBundle, { data, loading }] = useMutation(CreateBundle, {

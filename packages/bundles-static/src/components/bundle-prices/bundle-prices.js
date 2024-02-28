@@ -14,9 +14,10 @@ import { useRouteMatch } from 'react-router-dom';
 
 const BundlePrices = ({ bundle }) => {
   const intl = useIntl();
-  const match = useRouteMatch();
-  const { project } = useApplicationContext();
-  const { currencies } = project;
+  const { projectKey, currencies } = useApplicationContext((context) => ({
+    projectKey: context.project?.key ?? '',
+    currencies: context.project?.currencies ?? '',
+  }));
   const [currency, setCurrency] = useState(currencies[0]);
   const [country, setCountry] = useState(null);
   const [customerGroup, setCustomerGroup] = useState(null);
@@ -24,7 +25,7 @@ const BundlePrices = ({ bundle }) => {
   const [date, setDate] = useState('');
 
   const getMcPriceUrl = (productId, variantId) =>
-    `/${match.params.projectKey}/products/${productId}/variants/${variantId}/prices`;
+    `/${projectKey}/products/${productId}/variants/${variantId}/prices`;
 
   function getViewPricesPath() {
     return `${getMcPriceUrl(bundle.id, MASTER_VARIANT_ID)}`;
