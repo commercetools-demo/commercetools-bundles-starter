@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMcQuery } from '@commercetools-frontend/application-shell';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { identity, pickBy } from 'lodash';
@@ -70,7 +70,7 @@ const PricesTable = ({
     ),
   };
 
-  const { data, loading, error } = useQuery(GetProductPrices, {
+  const { data, loading, error } = useMcQuery(GetProductPrices, {
     variables,
     fetchPolicy: 'no-cache',
     context: {

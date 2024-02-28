@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
 import { useIntl } from 'react-intl';
-import { useQuery } from '@apollo/client';
-import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import {
+  useApplicationContext,
+  useMcQuery,
+} from '@commercetools-frontend/application-shell-connectors';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
@@ -10,6 +12,7 @@ import DateField from '@commercetools-uikit/date-field';
 import GetPriceFilters from './get-price-filters.graphql';
 import messages from './messages';
 import styles from './price-filters.mod.css';
+import { TQuery } from '../../types/generated/ctp';
 
 const mapOptions = (options) =>
   options.map((option) => ({
@@ -56,14 +59,17 @@ const PriceFilters: FC<Props> = ({
       countries: context.project?.countries ?? [],
     })
   );
-  const { data, loading, error } = useQuery(GetPriceFilters, {
-    variables: {
-      locale: dataLocale,
-    },
-    context: {
-      target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
-    },
-  });
+  const { data, loading, error } = useMcQuery<TQuery, { locale: string }>(
+    GetPriceFilters,
+    {
+      variables: {
+        locale: dataLocale,
+      },
+      context: {
+        target: GRAPHQL_TARGETS.COMMERCETOOLS_PLATFORM,
+      },
+    }
+  );
 
   if (error)
     return (
@@ -73,6 +79,15 @@ const PriceFilters: FC<Props> = ({
       />
     );
   if (loading) return null;
+
+  if (!data || !data.channels || !data.customerGroups) {
+    return (
+      <Text.Body
+        data-testid="error-message"
+        intlMessage={messages.errorLoading}
+      />
+    );
+  }
 
   const { channels, customerGroups } = data;
   const currencyOptions = mapOptions(currencies);

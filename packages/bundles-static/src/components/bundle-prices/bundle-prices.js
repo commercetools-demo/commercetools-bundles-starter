@@ -10,7 +10,6 @@ import { PriceFilters } from '@commercetools-us-ps/bundles-core';
 import { MASTER_VARIANT_ID } from '../../constants';
 import messages from './messages';
 import PricesTable from './prices-table';
-import { useRouteMatch } from 'react-router-dom';
 
 const BundlePrices = ({ bundle }) => {
   const intl = useIntl();
