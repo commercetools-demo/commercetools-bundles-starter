@@ -65,6 +65,20 @@
       "isSearchable": true,
       "inputHint": "SingleLine",
       "displayGroup": "Other"
+    },
+    {
+      "name": "category-search",
+      "label": {
+        "en": "Category Search"
+      },
+      "isSearchable": true,
+      "attributeConstraint": "None",
+      "type": {
+        "name": "set",
+        "elementType": {
+          "name": "text"
+        }
+      }
     }
   ],
   "key": "dynamic-bundle-parent"
