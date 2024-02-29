@@ -117,7 +117,6 @@ const DynamicForm = (props) => {
 };
 DynamicForm.displayName = 'Form';
 DynamicForm.propTypes = {
-  dataLocale: PropTypes.string.isRequired,
   initialValidation: PropTypes.shape({
     slugDefined: PropTypes.bool,
   }).isRequired,
