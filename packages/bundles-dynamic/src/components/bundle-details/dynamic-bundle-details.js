@@ -1,14 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { getAttribute } from '@commercetools-us-ps/bundles-core';
+import { useIntl } from 'react-intl';
 import {
+  getAttribute,
   BundleDetails,
   BundleImages,
-  TabHeader,
+  transformLocalizedFieldToString,
 } from '@commercetools-us-ps/bundles-core';
-import { transformLocalizedFieldToString } from '@commercetools-us-ps/bundles-core';
 import { ATTRIBUTES, ROOT_PATH } from '../../constants';
 import { EditBundleForm } from '../edit-bundle-form';
 import { BundlePreview } from '../bundle-preview';
@@ -16,6 +14,7 @@ import { BundlePrices } from '../bundle-prices';
 import messages from './messages';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import { useRouteMatch } from 'react-router-dom';
+import { TabHeader } from '@commercetools-frontend/application-components';
 
 export const transformResults = (results) => {
   const { masterVariant } = results;
@@ -50,30 +49,30 @@ const DynamicBundleDetails = () => {
           <TabHeader
             to={`${DETAIL_ROUTE}/general`}
             key={intl.formatMessage(messages.generalTab)}
-            name={intl.formatMessage(messages.generalTab)}
+            label={intl.formatMessage(messages.generalTab)}
           >
-            <FormattedMessage {...messages.generalTab} />
+            {intl.formatMessage(messages.generalTab)}
           </TabHeader>
           <TabHeader
             to={`${DETAIL_ROUTE}/images`}
             key={intl.formatMessage(messages.imagesTab)}
-            name={intl.formatMessage(messages.imagesTab)}
+            label={intl.formatMessage(messages.imagesTab)}
           >
-            <FormattedMessage {...messages.imagesTab} />
+            {intl.formatMessage(messages.imagesTab)}
           </TabHeader>
           <TabHeader
             to={`${DETAIL_ROUTE}/prices`}
             key={intl.formatMessage(messages.pricesTab)}
-            name={intl.formatMessage(messages.pricesTab)}
+            label={intl.formatMessage(messages.pricesTab)}
           >
-            <FormattedMessage {...messages.pricesTab} />
+            {intl.formatMessage(messages.pricesTab)}
           </TabHeader>
           <TabHeader
             to={`${DETAIL_ROUTE}/preview`}
             key={intl.formatMessage(messages.previewTab)}
-            name={intl.formatMessage(messages.previewTab)}
+            label={intl.formatMessage(messages.previewTab)}
           >
-            <FormattedMessage {...messages.previewTab} />
+            {intl.formatMessage(messages.previewTab)}
           </TabHeader>
         </>
       }
