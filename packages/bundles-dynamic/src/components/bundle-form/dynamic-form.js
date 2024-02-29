@@ -10,6 +10,7 @@ import FieldLabel from '@commercetools-uikit/field-label';
 import { BundleForm } from '@commercetools-us-ps/bundles-core';
 import { CategoryField } from '../category-field';
 import messages from './messages';
+import { useFormikContext } from 'formik';
 
 const FIELDS = {
   CATEGORIES: 'categories',
@@ -21,11 +22,13 @@ const FIELDS = {
 
 const DynamicForm = (props) => {
   const { values, touched, errors, handleBlur, handleChange } = props;
+  const formik = useFormikContext();
   const { dynamicPrice } = values;
 
   return (
     <BundleForm
       {...props}
+      formik={formik}
       fields={[
         <Spacings.Stack
           scale="xs"

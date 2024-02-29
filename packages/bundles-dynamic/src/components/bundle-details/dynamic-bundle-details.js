@@ -15,6 +15,7 @@ import { BundlePreview } from '../bundle-preview';
 import { BundlePrices } from '../bundle-prices';
 import messages from './messages';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import { useRouteMatch } from 'react-router-dom';
 
 export const transformResults = (results) => {
   const { masterVariant } = results;
@@ -34,8 +35,9 @@ export const transformResults = (results) => {
   };
 };
 
-const DynamicBundleDetails = ({ match }) => {
+const DynamicBundleDetails = () => {
   const intl = useIntl();
+  const match = useRouteMatch();
   const { projectKey } = useApplicationContext((context) => ({
     projectKey: context.project.key ?? '',
   }));
@@ -109,14 +111,4 @@ const DynamicBundleDetails = ({ match }) => {
 };
 
 DynamicBundleDetails.displayName = 'BundleDetails';
-DynamicBundleDetails.propTypes = {
-  match: PropTypes.shape({
-    url: PropTypes.string,
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-      bundleId: PropTypes.string.isRequired,
-    }).isRequired,
-  }).isRequired,
-};
-
 export default DynamicBundleDetails;

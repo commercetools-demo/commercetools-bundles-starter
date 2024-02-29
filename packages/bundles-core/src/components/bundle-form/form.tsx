@@ -9,7 +9,6 @@ import Text from '@commercetools-uikit/text';
 import TextField from '@commercetools-uikit/text-field';
 import CollapsiblePanel from '@commercetools-uikit/collapsible-panel';
 import LocalizedTextField from '@commercetools-uikit/localized-text-field';
-import PrimaryButton from '@commercetools-uikit/primary-button';
 import Constraints from '@commercetools-uikit/constraints';
 import messages from './messages';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
