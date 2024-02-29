@@ -1,5 +1,8 @@
 import { entryPointUriPath, PERMISSIONS } from './src/constants';
 
+/**
+ * @type {import('@commercetools-frontend/application-config').ConfigOptionsForCustomApplication}
+ */
 const config = {
   name: 'Dynamic bundles',
   entryPointUriPath: entryPointUriPath,
@@ -14,7 +17,7 @@ const config = {
     },
   },
   oAuthScopes: {
-    view: ['view_products'],
+    view: ['view_products', 'view_customers', 'view_customer_groups'],
     manage: ['manage_products'],
   },
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
