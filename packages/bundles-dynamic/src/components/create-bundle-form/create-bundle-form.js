@@ -2,34 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useMutation } from '@apollo/client';
-import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
+import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import Spacings from '@commercetools-uikit/spacings';
-import { useShowSideNotification } from '@commercetools-us-ps/bundles-core/components/hooks';
 import {
   BackToList,
   TabContainer,
   View,
   ViewHeader,
-} from '@commercetools-us-ps/bundles-core/components/index';
+} from '@commercetools-us-ps/bundles-core';
 import { ATTRIBUTES, BUNDLE_PRODUCT_TYPE, ROOT_PATH } from '../../constants';
 import { BundleForm } from '../bundle-form';
 import CreateBundle from './create-bundle.graphql';
 import messages from './messages';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 const CreateBundleForm = ({ match }) => {
   const intl = useIntl();
-  const mainRoute = `/${match.params.projectKey}/${ROOT_PATH}`;
-  const showSuccessNotification = useShowSideNotification(
-    'success',
-    messages.createSuccess
-  );
-  const showErrorNotification = useShowSideNotification(
-    'error',
-    messages.createError
-  );
+  const { projectKey } = useApplicationContext((context) => ({
+    projectKey: context.project.key ?? '',
+  }));
+  const mainRoute = `/${projectKey}/${ROOT_PATH}`;
+  const showNotification = useShowNotification();
   const [createBundle, { data, loading }] = useMutation(CreateBundle, {
-    onCompleted: showSuccessNotification,
-    onError: showErrorNotification,
+    onCompleted: () =>
+      showNotification({
+        kind: 'success',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.createSuccess),
+      }),
+    onError: () =>
+      showNotification({
+        kind: 'error',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.createError),
+      }),
   });
 
   function onSubmit(values) {

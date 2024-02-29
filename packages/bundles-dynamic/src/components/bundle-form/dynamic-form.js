@@ -7,7 +7,7 @@ import NumberInput from '@commercetools-uikit/number-input';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import FieldLabel from '@commercetools-uikit/field-label';
-import { BundleForm } from '@commercetools-us-ps/bundles-core/components/bundle-form';
+import { BundleForm } from '@commercetools-us-ps/bundles-core';
 import { CategoryField } from '../category-field';
 import messages from './messages';
 

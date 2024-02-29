@@ -7,8 +7,8 @@ import {
   BundleProvider,
   GetBundleProductType,
   PathProvider,
-} from '@commercetools-us-ps/bundles-core/context';
-import { Error } from '@commercetools-us-ps/bundles-core/components/index';
+  Error,
+} from '@commercetools-us-ps/bundles-core';
 import { CreateBundleForm } from './components/create-bundle-form';
 import { DynamicBundlesTable } from './components/bundles-table';
 import { DynamicBundleDetails } from './components/bundle-details';

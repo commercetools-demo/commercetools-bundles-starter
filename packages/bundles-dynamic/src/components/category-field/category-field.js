@@ -15,8 +15,8 @@ import { PlusBoldIcon, CloseBoldIcon } from '@commercetools-uikit/icons';
 import IconButton from '@commercetools-uikit/icon-button';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
-import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
-import { CategorySearchInput } from '@commercetools-us-ps/bundles-core/components/index';
+import { getAttribute } from '@commercetools-us-ps/bundles-core';
+import { CategorySearchInput } from '@commercetools-us-ps/bundles-core';
 import {
   ADDITIONAL_CHARGE,
   CATEGORY,

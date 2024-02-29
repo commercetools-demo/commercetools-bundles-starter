@@ -2,18 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
+import { getAttribute } from '@commercetools-us-ps/bundles-core';
 import {
   BundleDetails,
   BundleImages,
   TabHeader,
-} from '@commercetools-us-ps/bundles-core/components/index';
-import { transformLocalizedFieldToString } from '@commercetools-us-ps/bundles-core/components/util';
+} from '@commercetools-us-ps/bundles-core';
+import { transformLocalizedFieldToString } from '@commercetools-us-ps/bundles-core';
 import { ATTRIBUTES, ROOT_PATH } from '../../constants';
 import { EditBundleForm } from '../edit-bundle-form';
 import { BundlePreview } from '../bundle-preview';
 import { BundlePrices } from '../bundle-prices';
 import messages from './messages';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 
 export const transformResults = (results) => {
   const { masterVariant } = results;
@@ -35,10 +36,12 @@ export const transformResults = (results) => {
 
 const DynamicBundleDetails = ({ match }) => {
   const intl = useIntl();
-  const DETAIL_ROUTE = `/${match.params.projectKey}/${ROOT_PATH}/${match.params.bundleId}`;
+  const { projectKey } = useApplicationContext((context) => ({
+    projectKey: context.project.key ?? '',
+  }));
+  const DETAIL_ROUTE = `/${projectKey}/${ROOT_PATH}/${match.params.bundleId}`;
   return (
     <BundleDetails
-      match={match}
       transformResults={transformResults}
       headers={
         <>
@@ -83,13 +86,11 @@ const DynamicBundleDetails = ({ match }) => {
           />
           <Route
             path={`${match.url}/images`}
-            render={() => (
-              <BundleImages match={match} {...bundle} onComplete={onComplete} />
-            )}
+            render={() => <BundleImages {...bundle} onComplete={onComplete} />}
           />
           <Route
             path={`${match.url}/prices`}
-            render={() => <BundlePrices match={match} {...bundle} />}
+            render={() => <BundlePrices {...bundle} />}
           />
           <Route
             path={`${match.url}/preview`}

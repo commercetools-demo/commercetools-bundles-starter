@@ -8,11 +8,11 @@ import {
   BundlesTable,
   COLUMN_KEYS,
   PRODUCT_STATUS,
-} from '@commercetools-us-ps/bundles-core/components/index';
-import { localize } from '@commercetools-us-ps/bundles-core/components/util';
+} from '@commercetools-us-ps/bundles-core';
 import { generateProduct } from '../../test-util';
 import DynamicBundlesTable from './dynamic-bundles-table';
 import messages from './messages';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
 
 const project = {
   key: faker.random.word(),
@@ -75,11 +75,11 @@ describe('dynamic bundles table', () => {
       const results = generateProducts();
       const bundle = results[0];
       const wrapper = loadBundlesTable();
-      const expected = localize({
-        obj: bundle,
+      const expected = formatLocalizedString(bundle, {
         key: 'name',
-        language: dataLocale,
+        locale: dataLocale,
         fallbackOrder: languages,
+        fallback: NO_VALUE_FALLBACK,
       });
       const actual = wrapper
         .find(BundlesTable)

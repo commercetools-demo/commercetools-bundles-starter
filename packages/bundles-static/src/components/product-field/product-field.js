@@ -10,7 +10,7 @@ import NumberInput from '@commercetools-uikit/number-input';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
 
-import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
+import { getAttribute } from '@commercetools-us-ps/bundles-core';
 import { ProductSearchInput } from '@commercetools-us-ps/bundles-core';
 import {
   PRODUCT,

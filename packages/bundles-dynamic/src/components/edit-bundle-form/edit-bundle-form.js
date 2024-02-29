@@ -1,25 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useMutation } from '@apollo/client';
-import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
-import { useShowSideNotification } from '@commercetools-us-ps/bundles-core/components/hooks';
+import { DOMAINS, GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { ATTRIBUTES, MASTER_VARIANT_ID } from '../../constants';
 import { BundleForm } from '../bundle-form';
 import EditBundle from './edit-bundle.graphql';
 import messages from './messages';
+import { useShowNotification } from '@commercetools-frontend/actions-global';
+import { useIntl } from 'react-intl';
 
 const EditBundleForm = ({ bundle, onComplete }) => {
-  const showSuccessNotification = useShowSideNotification(
-    'success',
-    messages.editSuccess
-  );
-  const showErrorNotification = useShowSideNotification(
-    'error',
-    messages.editError
-  );
+  const intl = useIntl();
+  const showNotification = useShowNotification();
   const [editBundle, { data, loading }] = useMutation(EditBundle, {
-    onCompleted: showSuccessNotification,
-    onError: showErrorNotification,
+    onCompleted: () =>
+      showNotification({
+        kind: 'success',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.editSuccess),
+      }),
+    onError: () =>
+      showNotification({
+        kind: 'error',
+        domain: DOMAINS.SIDE,
+        text: intl.formatMessage(messages.editError),
+      }),
   });
 
   function onSubmit(values) {

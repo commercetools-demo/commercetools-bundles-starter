@@ -22,8 +22,7 @@ import PrimaryButton from '@commercetools-uikit/primary-button';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import SelectInput from '@commercetools-uikit/select-input';
-import { PriceFilters } from '@commercetools-us-ps/bundles-core/components';
-import { localize } from '@commercetools-us-ps/bundles-core/components/util';
+import { PriceFilters } from '@commercetools-us-ps/bundles-core';
 import { BUNDLE_CART_CUSTOM_TYPE } from '../../constants';
 import {
   getScopedPriceParameters,
@@ -38,6 +37,7 @@ import GetPriceRange from '../get-price-range.rest.graphql';
 import CreateCartWithBundle from './create-cart-with-bundle.graphql';
 import styles from './bundle-preview.mod.css';
 import messages from './messages';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
 
 export const PROJECTION = {
   CURRENT: 'current',
@@ -396,11 +396,11 @@ const BundlePreview = ({ bundle, refetch }) => {
             <Spacings.Inline justifyContent="space-between">
               <Spacings.Inline alignItems="baseline">
                 <Text.Headline as="h2" data-testid="bundle-name">
-                  {localize({
-                    obj: details,
+                  {formatLocalizedString(details, {
                     key: 'name',
-                    language: dataLocale,
+                    locale: dataLocale,
                     fallbackOrder: languages,
+                    fallback: NO_VALUE_FALLBACK,
                   })}
                 </Text.Headline>
                 {priceRange && (
@@ -437,11 +437,11 @@ const BundlePreview = ({ bundle, refetch }) => {
             </Spacings.Inline>
             {description ? (
               <Text.Body data-testid="bundle-description">
-                {localize({
-                  obj: details,
-                  key: 'description',
-                  language: dataLocale,
+                {formatLocalizedString(details, {
+                  key: 'name',
+                  locale: dataLocale,
                   fallbackOrder: languages,
+                  fallback: NO_VALUE_FALLBACK,
                 })}
               </Text.Body>
             ) : (

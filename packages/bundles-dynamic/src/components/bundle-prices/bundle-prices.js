@@ -6,15 +6,17 @@ import { ExternalLinkIcon, ListIcon } from '@commercetools-uikit/icons';
 import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
-import { PriceFilters } from '@commercetools-us-ps/bundles-core/components';
+import { PriceFilters } from '@commercetools-us-ps/bundles-core';
 import { MASTER_VARIANT_ID } from '../../constants';
 import PricesTable from './prices-table';
 import messages from './messages';
 
-const BundlePrices = ({ match, id, categories, dynamicPrice }) => {
+const BundlePrices = ({ id, categories, dynamicPrice }) => {
   const intl = useIntl();
-  const { project } = useApplicationContext();
-  const { currencies } = project;
+  const { projectKey, currencies } = useApplicationContext((context) => ({
+    projectKey: context.project.key ?? '',
+    currencies: context.project.currencies ?? '',
+  }));
   const [currency, setCurrency] = useState(currencies[0]);
   const [country, setCountry] = useState(null);
   const [customerGroup, setCustomerGroup] = useState(null);
@@ -22,7 +24,7 @@ const BundlePrices = ({ match, id, categories, dynamicPrice }) => {
   const [date, setDate] = useState('');
 
   const getMcPriceUrl = (productId, variantId) =>
-    `/${match.params.projectKey}/products/${productId}/variants/${variantId}/prices`;
+    `/${projectKey}/products/${productId}/variants/${variantId}/prices`;
 
   function getViewPricesPath() {
     return `${getMcPriceUrl(id, MASTER_VARIANT_ID)}`;
@@ -94,11 +96,6 @@ const BundlePrices = ({ match, id, categories, dynamicPrice }) => {
 };
 BundlePrices.displayName = 'BundlePrices';
 BundlePrices.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      projectKey: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
   id: PropTypes.string.isRequired,
   categories: PropTypes.array.isRequired,
   dynamicPrice: PropTypes.bool.isRequired,

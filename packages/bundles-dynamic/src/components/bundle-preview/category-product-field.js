@@ -8,8 +8,8 @@ import { ErrorMessage } from '@commercetools-uikit/messages';
 import FieldLabel from '@commercetools-uikit/field-label';
 import NumberInput from '@commercetools-uikit/number-input';
 import Spacings from '@commercetools-uikit/spacings';
-import { getAttribute } from '@commercetools-us-ps/bundles-core/util';
-import { ProductSearchInput } from '@commercetools-us-ps/bundles-core/components/index';
+import { getAttribute } from '@commercetools-us-ps/bundles-core';
+import { ProductSearchInput } from '@commercetools-us-ps/bundles-core';
 import {
   ADDITIONAL_CHARGE,
   CATEGORY_PATH,

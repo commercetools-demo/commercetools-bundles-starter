@@ -7,15 +7,14 @@ import { mockMutation, setMutation, getQuery, setQuery } from '@apollo/client';
 import { mockShowNotification } from '@commercetools-frontend/actions-global';
 import * as AppContext from '@commercetools-frontend/application-shell-connectors';
 import { NO_VALUE_FALLBACK } from '@commercetools-frontend/constants';
-import { PriceFilters } from '@commercetools-us-ps/bundles-core/components';
-import { localize } from '@commercetools-us-ps/bundles-core/components/util';
-import { useEffectMock } from '@commercetools-us-ps/bundles-core/components/test-util';
+import { PriceFilters, useEffectMock } from '@commercetools-us-ps/bundles-core';
 import { generateCategoryAttributes, generateProduct } from '../../test-util';
 import { transformResults } from '../bundle-details/dynamic-bundle-details';
 import { getCategoryAttributes } from './category-product-field';
 import BundlePreview, { getCartSelections, PROJECTION } from './bundle-preview';
 import messages from './messages';
 import { omitDeep } from '../../util';
+import { formatLocalizedString } from '@commercetools-frontend/l10n';
 
 const project = {
   key: faker.random.word(),
@@ -97,11 +96,11 @@ describe('bundle preview', () => {
     const wrapper = loadBundlePreview();
     const name = wrapper.find(bundleName);
     expect(name.html()).toContain(
-      localize({
-        obj: bundle,
+      formatLocalizedString(bundle, {
         key: 'name',
-        language: dataLocale,
-        fallback: project.languages,
+        locale: dataLocale,
+        fallbackOrder: project.languages,
+        fallback: NO_VALUE_FALLBACK,
       })
     );
   });
@@ -110,11 +109,11 @@ describe('bundle preview', () => {
     const wrapper = loadBundlePreview();
     const description = wrapper.find(bundleDescription);
     expect(description.html()).toContain(
-      localize({
-        obj: bundle,
+      formatLocalizedString(bundle, {
         key: 'description',
-        language: dataLocale,
-        fallback: project.languages,
+        locale: dataLocale,
+        fallbackOrder: project.languages,
+        fallback: NO_VALUE_FALLBACK,
       })
     );
   });
@@ -142,11 +141,11 @@ describe('bundle preview', () => {
     it('should display projection localized bundle name', () => {
       const name = wrapper.find(bundleName);
       expect(name.html()).toContain(
-        localize({
-          obj: bundle.staged,
+        formatLocalizedString(bundle.staged, {
           key: 'name',
-          language: dataLocale,
-          fallback: project.languages,
+          locale: dataLocale,
+          fallbackOrder: project.languages,
+          fallback: NO_VALUE_FALLBACK,
         })
       );
     });
@@ -154,11 +153,11 @@ describe('bundle preview', () => {
     it('should display projection localized bundle description', () => {
       const name = wrapper.find(bundleDescription);
       expect(name.html()).toContain(
-        localize({
-          obj: bundle.staged,
+        formatLocalizedString(bundle.staged, {
           key: 'description',
-          language: dataLocale,
-          fallback: project.languages,
+          locale: dataLocale,
+          fallbackOrder: project.languages,
+          fallback: NO_VALUE_FALLBACK,
         })
       );
     });
