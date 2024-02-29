@@ -16,6 +16,7 @@ import {
   COLUMN_KEYS,
   StatusBadge,
   CategorySearchInput,
+  getCode,
 } from '@commercetools-us-ps/bundles-core';
 import { ATTRIBUTES } from '../../constants';
 import { DATE_FORMAT_OPTIONS } from './constants';
@@ -59,7 +60,7 @@ const DynamicBundlesTable = ({ match, history }) => {
         });
       case COLUMN_KEYS.STATUS: {
         const { published, hasStagedChanges } = bundle;
-        const code = StatusBadge.getCode(published, hasStagedChanges);
+        const code = getCode(published, hasStagedChanges);
         return <StatusBadge code={code} />;
       }
       case COLUMN_KEYS.PRICE: {
