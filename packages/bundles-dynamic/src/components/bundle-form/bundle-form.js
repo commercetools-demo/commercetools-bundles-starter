@@ -72,16 +72,17 @@ const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
     maxQuantity: yup
       .number()
       .min(1, intl.formatMessage(messages.quantityError))
-      .integer(intl.formatMessage(messages.integerError))
-      .when('minQuantity', {
-        is: (val) => !!val,
-        then: yup
-          .number()
-          .moreThan(
-            yup.ref('minQuantity'),
-            intl.formatMessage(messages.maxGreaterThanMinError)
-          ),
-      }),
+      .integer(intl.formatMessage(messages.integerError)),
+    // .when('minQuantity', {
+    //   is: (val) => !!val,
+    //   then: yup
+    //     .number()
+    //     .moreThan(
+    //       yup.ref('minQuantity'),
+    //       intl.formatMessage(messages.maxGreaterThanMinError)
+    //     ),
+    //   otherwise: (schema) => schema.min(0),
+    // }),
     categories: yup.array(
       yup.object({
         category: yup
@@ -105,16 +106,18 @@ const BundleForm = ({ bundle, onSubmit, data, loading, redirect }) => {
                 .number()
                 .min(0, intl.formatMessage(messages.zeroQuantityError))
                 .integer(intl.formatMessage(messages.integerError))
-                .when('minQuantity', {
-                  is: (val) => !!val,
-                  then: yup
-                    .number()
-                    .moreThan(
-                      yup.ref('minQuantity'),
-                      intl.formatMessage(messages.maxGreaterThanMinError)
-                    ),
-                })
-            : yup.string()
+            : // .when('minQuantity', {
+              //   is: (val) => !!val,
+              //   then: yup
+              //     .number()
+              //     .moreThan(
+              //       yup.ref('minQuantity'),
+              //       intl.formatMessage(messages.maxGreaterThanMinError)
+              //     ),
+              //
+              //   otherwise: (schema) => schema.min(0),
+              // })
+              yup.string()
         ),
         additionalCharge: yup.bool(),
       })
