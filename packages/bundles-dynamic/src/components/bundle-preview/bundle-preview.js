@@ -94,44 +94,44 @@ const getValidationSchema = (categories, intl) =>
               value: yup.string(),
               label: yup.string(),
             })
-            .nullable()
-            .when('minQuantity', {
-              is: (val) => !!val,
-              then: yup
-                .object()
-                .required(intl.formatMessage(messages.productRequiredError)),
-            }),
+            .nullable(),
+          // .when('minQuantity', {
+          //   is: (val) => !!val,
+          //   then: yup
+          //     .object()
+          //     .required(intl.formatMessage(messages.productRequiredError)),
+          // }),
           quantity: yup
             .number()
             .integer(intl.formatMessage(messages.integerError))
             .typeError(intl.formatMessage(messages.integerError))
-            .when('minQuantity', {
-              is: (val) => !!val,
-              then: yup
-                .number()
-                .min(
-                  minQuantity,
-                  intl.formatMessage(messages.minQuantityError, {
-                    min: minQuantity,
-                  })
-                )
-                .required(intl.formatMessage(messages.quantityRequiredError)),
-              otherwise: yup.number().min(
-                0,
-                intl.formatMessage(messages.minQuantityError, {
-                  min: 0,
-                })
-              ),
-            })
-            .when('maxQuantity', {
-              is: (val) => !!val,
-              then: yup.number().max(
-                maxQuantity,
-                intl.formatMessage(messages.maxQuantityError, {
-                  max: maxQuantity,
-                })
-              ),
-            })
+            // .when('minQuantity', {
+            //   is: (val) => !!val,
+            //   then: yup
+            //     .number()
+            //     .min(
+            //       minQuantity,
+            //       intl.formatMessage(messages.minQuantityError, {
+            //         min: minQuantity,
+            //       })
+            //     )
+            //     .required(intl.formatMessage(messages.quantityRequiredError)),
+            //   otherwise: yup.number().min(
+            //     0,
+            //     intl.formatMessage(messages.minQuantityError, {
+            //       min: 0,
+            //     })
+            //   ),
+            // })
+            // .when('maxQuantity', {
+            //   is: (val) => !!val,
+            //   then: yup.number().max(
+            //     maxQuantity,
+            //     intl.formatMessage(messages.maxQuantityError, {
+            //       max: maxQuantity,
+            //     })
+            //   ),
+            // })
             .nullable()
             .transform((value, originalValue) =>
               originalValue.toString().trim() === '' ? null : value
