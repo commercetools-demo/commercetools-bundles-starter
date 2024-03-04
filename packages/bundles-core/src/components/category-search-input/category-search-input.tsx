@@ -5,8 +5,9 @@ import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import AsyncSelectInput from '@commercetools-uikit/async-select-input';
 import { getPathName, transformLocalizedFieldsForCategory } from '../utils';
 import CategorySearch from './category-search.graphql';
+import { TCategory } from '../../types/generated/ctp';
 
-const transformResults = (results) =>
+const transformResults = (results: Array<TCategory>) =>
   results.map((category) =>
     transformLocalizedFieldsForCategory(category, [
       { from: 'nameAllLocales', to: 'name' },
@@ -38,11 +39,6 @@ type Props = {
     | 'auto';
   placeholder?: string;
   showProductCount?: boolean;
-  isRequired?: boolean;
-  touched?: boolean[];
-  errors?: {
-    missing?: boolean;
-  };
   hasError?: boolean;
   onBlur?(...args: unknown[]): unknown;
   onChange(...args: unknown[]): unknown;
@@ -54,10 +50,7 @@ const CategorySearchInput: FC<Props> = ({
   horizontalConstraint,
   placeholder,
   showProductCount = false,
-  isRequired,
   hasError,
-  touched,
-  errors,
   onBlur,
   onChange,
 }) => {
@@ -65,7 +58,14 @@ const CategorySearchInput: FC<Props> = ({
     dataLocale: context.dataLocale ?? '',
     languages: context.project?.languages ?? [],
   }));
-  const { refetch } = useQuery(CategorySearch, {
+  const { refetch } = useQuery<
+    { categories: { results: Array<TCategory> } },
+    {
+      limit: number;
+      offset: number;
+      fullText?: { locale: string; text: string };
+    }
+  >(CategorySearch, {
     skip: true,
     variables: {
       limit: 20,
@@ -76,9 +76,8 @@ const CategorySearchInput: FC<Props> = ({
     },
   });
 
-  const loadOptions = (text) =>
-    // refetch({ fullText: { locale: dataLocale, text } }).then((response) => {
-    refetch().then((response) => {
+  const loadOptions = (text: string) =>
+    refetch({ fullText: { locale: dataLocale, text } }).then((response) => {
       const categories = transformResults(response.data.categories.results);
       return categories.map((category) => ({
         label: `${getPathName(category, dataLocale, languages)} ${

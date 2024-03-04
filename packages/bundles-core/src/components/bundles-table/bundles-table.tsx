@@ -20,14 +20,14 @@ import { DEFAULT_VARIABLES, PAGE_SIZE } from './constants';
 import BundleProductsSearch from './bundle-search.rest.graphql';
 import messages from './messages';
 import { TColumn } from '@commercetools-uikit/data-table/dist/declarations/src/data-table';
-import { TRow } from '@commercetools-uikit/data-table';
+import DataTable, { TRow } from '@commercetools-uikit/data-table';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { TProduct, TQuery } from '../../types/generated/ctp';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { PageNotFound } from '@commercetools-frontend/application-components';
 import { Loading, Error } from '../states';
 import { SearchInput } from '../search-input';
-import { PaginatedTable } from '../paginated-table';
+import { Pagination } from '@commercetools-uikit/pagination';
 
 type Props = {
   title: {
@@ -209,22 +209,28 @@ const BundlesTable: FC<Props> = ({
           </Spacings.Stack>
         </Card>
         {count > 0 ? (
-          <PaginatedTable<TProduct>
-            columns={columnDefinitions}
-            rows={results}
-            itemRenderer={(row, column) => renderItem(row, (column as any).key)}
-            total={total}
-            onRowClick={(event, rowIndex) =>
-              handleRowClick(results[rowIndex].id)
-            }
-            sortBy={sort}
-            sortDirection={direction}
-            onSortChange={handleSortChange}
-            page={page}
-            onPageChange={onPageChange}
-            perPage={perPage}
-            onPerPageChange={onPerPageChange}
-          />
+          <>
+            <DataTable<TProduct>
+              columns={columnDefinitions}
+              rows={results}
+              itemRenderer={(row, column) =>
+                renderItem(row, (column as any).key)
+              }
+              onRowClick={(event, rowIndex) =>
+                handleRowClick(results[rowIndex].id)
+              }
+              sortedBy={sort}
+              sortDirection={direction}
+              onSortChange={handleSortChange}
+            />
+            <Pagination
+              page={page}
+              onPageChange={onPageChange}
+              perPage={perPage}
+              onPerPageChange={onPerPageChange}
+              totalItems={total}
+            />
+          </>
         ) : (
           <Spacings.Inline scale="xs" alignItems={'center'}>
             <Text.Body

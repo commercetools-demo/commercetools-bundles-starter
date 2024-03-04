@@ -23,8 +23,8 @@ const StaticBundlesTable = () => {
     dataLocale: context.dataLocale ?? '',
     languages: context.project?.languages ?? [],
   }));
-  const [category, setCategory] = useState(null);
-  const [product, setProduct] = useState(null);
+  const [category, setCategory] = useState(undefined);
+  const [product, setProduct] = useState(undefined);
 
   function filterByCategory(event, setFilter) {
     const targetValue = event.target.value;
@@ -101,28 +101,20 @@ const StaticBundlesTable = () => {
       subtitle={messages.titleResults}
       filterInputs={(filter) => (
         <>
-          {category && (
-            <CategorySearchInput
-              name="category"
-              placeholder={intl.formatMessage(
-                messages.categoryFilterPlaceholder
-              )}
-              horizontalConstraint="scale"
-              value={category}
-              onChange={(event) => filterByCategory(event, filter)}
-            />
-          )}
-          {product && (
-            <ProductSearchInput
-              name="product"
-              placeholder={intl.formatMessage(
-                messages.productFilterPlaceholder
-              )}
-              horizontalConstraint="scale"
-              value={product}
-              onChange={(event) => filterByProduct(event, filter)}
-            />
-          )}
+          <CategorySearchInput
+            name="category"
+            placeholder={intl.formatMessage(messages.categoryFilterPlaceholder)}
+            horizontalConstraint="scale"
+            value={category}
+            onChange={(event) => filterByCategory(event, filter)}
+          />
+          <ProductSearchInput
+            name="product"
+            placeholder={intl.formatMessage(messages.productFilterPlaceholder)}
+            horizontalConstraint="scale"
+            value={product}
+            onChange={(event) => filterByProduct(event, filter)}
+          />
         </>
       )}
     />

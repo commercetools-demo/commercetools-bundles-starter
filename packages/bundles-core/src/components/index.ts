@@ -2,7 +2,6 @@ export * from './bundle-commands';
 export * from './bundle-details';
 export * from './bundles-table';
 export * from './category-search-input';
-export * from './paginated-table';
 export * from './product-search-input';
 export * from './search-input';
 export * from './states';
