@@ -1,14 +1,8 @@
 {
   "trailingComma": "es5",
   "singleQuote": true,
-  "parser": "babel",
+  "parser": "typescript",
   "overrides": [
-    {
-      "files": "*.js",
-      "options": {
-        "parser": "babel"
-      }
-    },
     {
       "files": "*.css",
       "options": {

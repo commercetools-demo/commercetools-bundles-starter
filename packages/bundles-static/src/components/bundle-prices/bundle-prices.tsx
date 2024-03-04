@@ -1,0 +1,95 @@
+import { FC, useState } from 'react';
+import { useIntl } from 'react-intl';
+import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import Spacings from '@commercetools-uikit/spacings';
+import Text from '@commercetools-uikit/text';
+import SecondaryButton from '@commercetools-uikit/secondary-button';
+import { ListIcon, ExternalLinkIcon } from '@commercetools-uikit/icons';
+import { PriceFilters } from '@commercetools-us-ps/bundles-core';
+import { MASTER_VARIANT_ID } from '../../constants';
+import messages from './messages';
+import PricesTable from './prices-table';
+import { StaticBundle } from '../bundle-form/bundle-form';
+import { Link } from 'react-router-dom';
+
+interface Props {
+  bundle: StaticBundle;
+}
+const BundlePrices: FC<Props> = ({ bundle }) => {
+  const intl = useIntl();
+  const { projectKey, currencies } = useApplicationContext((context) => ({
+    projectKey: context.project?.key ?? '',
+    currencies: context.project?.currencies ?? '',
+  }));
+  const [currency, setCurrency] = useState<string>(currencies[0]);
+  const [country, setCountry] = useState<string>('');
+  const [customerGroup, setCustomerGroup] = useState<string>('');
+  const [channel, setChannel] = useState<string>('');
+  const [date, setDate] = useState<string>('');
+
+  const getMcPriceUrl = (productId, variantId) =>
+    `/${projectKey}/products/${productId}/variants/${variantId}/prices`;
+
+  function getViewPricesPath() {
+    return `${getMcPriceUrl(bundle.id, MASTER_VARIANT_ID)}`;
+  }
+
+  function getAddPricePath() {
+    return `${getMcPriceUrl(bundle.id, MASTER_VARIANT_ID)}/new`;
+  }
+
+  return (
+    <Spacings.Stack scale="m">
+      <Spacings.Inline
+        scale="s"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Text.Body intlMessage={messages.title} />
+
+        <Spacings.Inline scale="m">
+          <SecondaryButton
+            as={Link}
+            data-testid="view-prices-btn"
+            iconLeft={<ListIcon />}
+            label={intl.formatMessage(messages.viewPricesButton)}
+            to={getViewPricesPath}
+            target={'_.blank'}
+          />
+          <SecondaryButton
+            as={Link}
+            data-testid="add-price-btn"
+            iconLeft={<ExternalLinkIcon />}
+            label={intl.formatMessage(messages.addPriceButton)}
+            to={getAddPricePath}
+            target={'_.blank'}
+          />
+        </Spacings.Inline>
+      </Spacings.Inline>
+      <PriceFilters
+        currency={currency}
+        country={country}
+        customerGroup={customerGroup}
+        channel={channel}
+        date={date}
+        setCurrency={setCurrency}
+        setCountry={setCountry}
+        setCustomerGroup={setCustomerGroup}
+        setChannel={setChannel}
+        setDate={setDate}
+      />
+      <PricesTable
+        variants={bundle.products}
+        currency={currency}
+        country={country}
+        customerGroup={customerGroup}
+        channel={channel}
+        date={date}
+        getMcPriceUrl={getMcPriceUrl}
+      />
+    </Spacings.Stack>
+  );
+};
+BundlePrices.displayName = 'BundlePrices';
+
+export default BundlePrices;

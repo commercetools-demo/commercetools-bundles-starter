@@ -8,12 +8,12 @@ const config = {
   entryPointUriPath,
   cloudIdentifier: '${env:CLOUD_IDENTIFIER}',
   env: {
+    development: {
+      initialProjectKey: '${env:INITIAL_PROJECT_KEY}',
+    },
     production: {
       applicationId: '${env:APPLICATION_ID}',
       url: '${env:APPLICATION_URL}',
-    },
-    development: {
-      initialProjectKey: '${env:INITIAL_PROJECT_KEY}',
     },
   },
   oAuthScopes: {
@@ -23,8 +23,8 @@ const config = {
   icon: '${path:@commercetools-frontend/assets/application-icons/rocket.svg}',
   mainMenuLink: {
     defaultLabel: 'Bundles',
-    labelAllLocales: [],
-    permissions: [PERMISSIONS.View],
+      labelAllLocales: [],
+      permissions: [PERMISSIONS.View],
   }
 };
 

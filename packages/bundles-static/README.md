@@ -11,10 +11,10 @@ This custom application allows users to manage static product bundles.
 - [Build the production bundles](#build-the-production-bundles)
 - [Deployment](#deployment)
 - [Linting, formatting, and so on](#linting-formatting-and-so-on)
-  - [Formatting code](#formatting-code)
-  - [Git Hooks](#git-hooks)
-  - [Linting GraphQL Queries](#linting-graphql-queries)
-  - [Generating GraphQL schema](#generating-graphql-schema)
+    - [Formatting code](#formatting-code)
+    - [Git Hooks](#git-hooks)
+    - [Linting GraphQL Queries](#linting-graphql-queries)
+    - [Generating GraphQL schema](#generating-graphql-schema)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
