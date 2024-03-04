@@ -1,6 +1,5 @@
 import React, { useState, useEffect, FC, ReactNode } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useQuery } from '@apollo/client';
 import omit from 'lodash/omit';
 import values from 'lodash/values';
 import { stringify } from 'qs';
@@ -14,7 +13,6 @@ import SecondaryButton from '@commercetools-uikit/secondary-button';
 import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { PlusBoldIcon } from '@commercetools-uikit/icons';
-import { Error, Loading, PaginatedTable, SearchInput } from '../index';
 import { SORT_OPTIONS } from '../constants';
 import { useBundleContext } from '../../context';
 import { COLUMN_KEYS } from './column-definitions';
@@ -27,6 +25,9 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { TProduct, TQuery } from '../../types/generated/ctp';
 import { GRAPHQL_TARGETS } from '@commercetools-frontend/constants';
 import { PageNotFound } from '@commercetools-frontend/application-components';
+import { Loading, Error } from '../states';
+import { SearchInput } from '../search-input';
+import { PaginatedTable } from '../paginated-table';
 
 type Props = {
   title: {

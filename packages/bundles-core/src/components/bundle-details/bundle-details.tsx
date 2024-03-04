@@ -8,7 +8,7 @@ import {
   useApplicationContext,
   useMcQuery,
 } from '@commercetools-frontend/application-shell-connectors';
-import { Error, Loading } from '../index';
+import { Error, Loading } from '../states';
 import { usePathContext } from '../../context';
 import { BundleCommands } from '../bundle-commands';
 import GetBundle from './get-bundle.graphql';

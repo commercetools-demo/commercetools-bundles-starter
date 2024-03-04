@@ -9,13 +9,13 @@ import Spacings from '@commercetools-uikit/spacings';
 import Text from '@commercetools-uikit/text';
 import { BinLinearIcon } from '@commercetools-uikit/icons';
 import IconButton from '@commercetools-uikit/icon-button';
-import { StatusSelect } from '../index';
 import { usePathContext } from '../../context';
 import EditBundle from './edit-bundle.graphql';
 import DeleteBundle from './delete-bundle.graphql';
 import messages from './messages';
 import styles from './bundle-commands.mod.css';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
+import { StatusSelect } from '../status';
 
 type Props = {
   id: string;
