@@ -85,7 +85,6 @@ interface ProductSearchInputProps {
     | 'scale'
     | 'auto';
   placeholder?: string;
-  isRequired?: boolean;
   touched?: boolean;
   errors?: object;
   hasError?: boolean;
@@ -101,7 +100,6 @@ const ProductSearchInput: FC<ProductSearchInputProps> = ({
   cacheItems = true,
   horizontalConstraint,
   placeholder,
-  isRequired,
   touched,
   errors,
   hasError,
@@ -163,7 +161,7 @@ const ProductSearchInput: FC<ProductSearchInputProps> = ({
     return result;
   };
 
-  const loadOptions = (text) =>
+  const loadOptions = (text: string) =>
     refetch({ text }).then((response) =>
       mapOptions(response.data.products.results.reduce(getMatchingVariants, []))
     );
@@ -179,12 +177,16 @@ const ProductSearchInput: FC<ProductSearchInputProps> = ({
       defaultOptions={cacheItems ? mapOptions(Object.values(cache.items)) : []}
       cacheOptions={cacheItems ? 20 : 0}
       loadOptions={loadOptions}
-      // components={{
-      //   Option: ProductSearchOption,
-      // }}
+      components={{
+        // @ts-ignore
+        Option: ProductSearchOption,
+      }}
       hasError={hasError}
+      touched={touched}
+      errors={errors}
       onBlur={onBlur}
       onChange={onChange}
+      renderError={renderError}
     />
   );
 };

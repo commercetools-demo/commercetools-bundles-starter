@@ -26,12 +26,14 @@ import {
   TQuery_ProductArgs,
 } from '../../types/generated/ctp';
 
+type Bundle = any;
+
 type Props = {
   transformResults(
     product: TProductData | undefined | null
-  ): TProductData | undefined;
+  ): Bundle | undefined;
   headers: React.ReactNode;
-  container(...args: unknown[]): unknown;
+  container(bundle: Bundle, onComplete: () => void): unknown;
 };
 
 const BundleDetails: FC<Props> = ({ transformResults, headers, container }) => {

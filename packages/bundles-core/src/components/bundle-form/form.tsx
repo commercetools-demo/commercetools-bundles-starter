@@ -14,45 +14,38 @@ import messages from './messages';
 import { useApplicationContext } from '@commercetools-frontend/application-shell-connectors';
 import SaveToolbar from '../save-toolbar/save-toolbar';
 
-type TFormValues = {
-  name: Record<string, string>;
-  description: Record<string, string>;
-  key: string;
-  sku: string;
-  slug: Record<string, string>;
+export type LocalizedString = { [name: string]: string };
+
+export type Bundle = {
+  id?: string;
+  version?: number;
+  name: LocalizedString;
+  description: LocalizedString;
+  key?: string;
+  sku?: string;
+  slug: LocalizedString;
 };
-type TErrors = {
-  name?: {
-    missing?: boolean;
-  };
-  slug?: {
-    missing?: boolean;
-  };
+
+export type BundleErrors = {
+  key: { missing?: boolean; invalidInput?: boolean; keyHint?: boolean };
+  name: { missing?: boolean };
+  description: { missing?: boolean };
+  slug: { missing?: boolean };
 };
-type Formik = ReturnType<typeof useFormik<TFormValues>>;
 
 type Props = {
-  formik: ReturnType<typeof useFormik<TFormValues>>;
+  formik: ReturnType<typeof useFormik<Bundle>>;
   fields?: React.ReactNode[];
   component?: {
     name: string;
     field(
       push: (obj: any) => void,
       remove: (obj: any) => void
-    ): React.Component;
+    ): React.JSX.Element;
   };
   initialValidation: {
     slugDefined?: boolean;
   };
-  values: Formik['values'];
-  errors: TErrors;
-  touched: Formik['touched'];
-  dirty: Formik['dirty'];
-  isValid: Formik['isValid'];
-  isSubmitting: Formik['isSubmitting'];
-  handleChange: Formik['handleChange'];
-  handleBlur: Formik['handleBlur'];
-  handleSubmit: Formik['handleSubmit'];
   setFieldValue(...args: unknown[]): unknown;
 };
 
@@ -61,15 +54,6 @@ const Form: FC<Props> = ({
   initialValidation,
   fields,
   component,
-  values,
-  errors,
-  touched,
-  dirty,
-  isValid,
-  isSubmitting,
-  handleBlur,
-  handleChange,
-  handleSubmit,
   setFieldValue,
 }) => {
   const intl = useIntl();
@@ -78,13 +62,13 @@ const Form: FC<Props> = ({
   }));
 
   useEffect(() => {
-    if (!initialValidation.slugDefined && !touched.slug) {
-      const slug = mapValues(values.name, (value) =>
+    if (!initialValidation.slugDefined && !formik.touched.slug) {
+      const slug = mapValues(formik.values.name, (value) =>
         kebabCase(value).toLowerCase()
       );
       setFieldValue('slug', slug);
     }
-  }, [values.name]);
+  }, [formik.values.name]);
 
   return (
     <FormikProvider value={formik}>
@@ -101,41 +85,49 @@ const Form: FC<Props> = ({
             <Spacings.Stack scale={'m'} alignItems={'stretch'}>
               <LocalizedTextField
                 name="name"
-                value={values.name}
+                value={formik.values.name}
                 title={intl.formatMessage(messages.bundleNameTitle)}
                 description={intl.formatMessage(messages.bundleNameDescription)}
                 selectedLanguage={dataLocale}
                 isRequired={true}
-                errors={errors.name}
-                touched={!!touched.name}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                errors={
+                  LocalizedTextField.toFieldErrors<Bundle>(formik.errors).name
+                }
+                touched={!!formik.touched.name}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
               <LocalizedTextField
                 name="description"
-                value={values.description}
+                value={formik.values.description}
                 title={intl.formatMessage(messages.bundleDescriptionTitle)}
                 selectedLanguage={dataLocale}
-                // touched={LocalizedTextInput.isTouched(touched?.description)}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                errors={
+                  LocalizedTextField.toFieldErrors<Bundle>(formik.errors)
+                    .description
+                }
+                touched={!!formik.touched.description}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
               <TextField
                 name="key"
-                value={values.key}
+                value={formik.values.key || ''}
                 title={intl.formatMessage(messages.bundleKeyTitle)}
                 hint={intl.formatMessage(messages.bundleKeyDescription)}
-                touched={touched?.key}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                errors={TextField.toFieldErrors<Bundle>(formik.errors).key}
+                touched={formik.touched?.key}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
               <TextField
                 name="sku"
-                value={values.sku}
+                value={formik.values.sku || ''}
                 title={intl.formatMessage(messages.bundleSkuTitle)}
-                touched={touched?.sku}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                errors={TextField.toFieldErrors<Bundle>(formik.errors).sku}
+                touched={formik.touched?.sku}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
               />
             </Spacings.Stack>
           </Constraints.Horizontal>
@@ -177,22 +169,24 @@ const Form: FC<Props> = ({
           <Constraints.Horizontal>
             <LocalizedTextField
               name="slug"
-              value={values.slug}
+              value={formik.values.slug}
               title={intl.formatMessage(messages.bundleSlugTitle)}
               hint={intl.formatMessage(messages.bundleSlugDescription)}
               selectedLanguage={dataLocale}
               isRequired={true}
-              errors={errors.slug}
-              // touched={LocalizedTextInput.isTouched(touched.slug)}
-              onBlur={handleBlur}
-              onChange={handleChange}
+              errors={
+                LocalizedTextField.toFieldErrors<Bundle>(formik.errors).slug
+              }
+              touched={!!formik.touched.slug}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
             />
           </Constraints.Horizontal>
         </CollapsiblePanel>
         <SaveToolbar
-          onSave={handleSubmit}
+          onSave={formik.handleSubmit}
           onCancel={formik.resetForm}
-          isVisible={dirty && isValid}
+          isVisible={formik.dirty && formik.isValid}
         />
       </Spacings.Stack>
     </FormikProvider>

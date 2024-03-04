@@ -17,25 +17,6 @@ export const transformLocalizedFieldToString = (localizedFields) => {
 };
 
 /**
- * Transforms a `LocalizedString` object into a list of `LocalizedField`
- *
- * { en: 'Hello' } -> [{ locale: 'en', value: 'Hello' }]
- */
-export const transformLocalizedStringToField = (localizedString) => {
-  if (!localizedString || Object.keys(localizedString).length === 0) return [];
-  return Object.keys(localizedString)
-    .sort()
-    .reduce(
-      (updatedLocalizedField: Array<any>, locale: string) =>
-        updatedLocalizedField.concat({
-          locale,
-          value: localizedString[locale],
-        }),
-      []
-    );
-};
-
-/**
  * Given a list of localized field names to map, replace the fields in the
  * format of `LocalizedField` to a `LocalizedString` object.
  * The existing "localized" fields (the list version) will be removed.

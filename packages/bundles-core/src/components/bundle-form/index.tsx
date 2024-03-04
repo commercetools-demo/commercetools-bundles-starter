@@ -1,1 +1,6 @@
-export { default as BundleForm } from './form';
+export {
+  default as BundleForm,
+  Bundle,
+  BundleErrors,
+  LocalizedString,
+} from './form';
