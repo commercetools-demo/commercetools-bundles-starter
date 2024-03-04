@@ -7,7 +7,6 @@ export * from './product-search-input';
 export * from './search-input';
 export * from './states';
 export * from './status';
-export * from './tab-header';
 export * from './price-filters';
 export * from './bundle-images';
 export * from './bundle-form';
